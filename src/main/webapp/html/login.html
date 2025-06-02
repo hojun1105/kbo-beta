@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>KBO 팬 허브 - 로그인</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0a0a23;
+            color: #222;
+        }
+        .login-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px; /* 간격 줄이기 */
+        }
+
+        .login-header h2 {
+            margin: 0;
+            font-size: 22px;
+            color: black;
+            line-height: 1;
+            padding-top: 12px; /* 글자를 아래로 이동 */
+        }
+
+        .login-logo {
+            height: 36px; /* 로고 크기도 조정 */
+            cursor: pointer;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 200px auto;
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: black;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 1px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+        .login-container button {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            margin: 10px 0;
+            font-size: 16px;
+            background-color: #0457a9;
+            border: none;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            border-radius: 30px;
+        }
+
+        .login-container input {
+            border: 1px solid #ccc;
+        }
+
+        .login-container button:hover {
+            background-color: #0062c6;
+        }
+
+        .login-container .link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .login-container .link a {
+            color: #0a0a23;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- 로그인 폼 -->
+<div class="login-container">
+    <div class="login-header">
+        <h2>로그인</h2>
+        <a href="/html/main.html">
+            <img src="/images/kbo.png" alt="KBO 로고" class="login-logo">
+        </a>
+    </div>
+    <div id="errorBox" class="error-message" style="display: none;"></div>
+    <form action="/login" method="post">
+        <input type="text" name="userId" placeholder="아이디" required>
+        <input type="password" name="password" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+    </form>
+    <div class="link">
+        계정이 없으신가요? <a href="/html/signup.html">회원가입</a>
+    </div>
+</div>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("error") === "1") {
+        document.getElementById("errorBox").textContent = "아이디 또는 비밀번호가 올바르지 않습니다.";
+        document.getElementById("errorBox").style.display = "block";
+    }
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 plugins {
   id 'java'
-  id 'war'
+  id 'war' // 톰캣 배포용
 }
 
 group 'org.example'
@@ -14,26 +14,48 @@ ext {
   junitVersion = '5.10.0'
 }
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
+java {
+  sourceCompatibility = JavaVersion.VERSION_20
+  targetCompatibility = JavaVersion.VERSION_20
+}
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
 }
 
 dependencies {
-  compileOnly('jakarta.servlet:jakarta.servlet-api:6.0.0')
-  implementation('org.hibernate.validator:hibernate-validator:8.0.1.Final')
+  // Servlet API - 톰캣에서 제공하므로 compileOnly
+  compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
-  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-}
-// build.gradle
-java {
-  sourceCompatibility = JavaVersion.VERSION_20
-  targetCompatibility = JavaVersion.VERSION_20
-}
+  // JSP API
+  compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.1.0'
 
+  // JSTL
+  implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+  implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+
+  // Spring MVC 6.x
+  implementation 'org.springframework:spring-webmvc:6.1.4'
+
+  // Spring ORM (JPA 연동)
+  implementation 'org.springframework:spring-orm:6.1.4'
+
+  // Hibernate + JPA API
+  implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+  implementation 'org.hibernate.orm:hibernate-core:6.4.1.Final'
+  implementation 'org.springframework.data:spring-data-jpa:3.2.4'
+
+  // JDBC 드라이버
+  runtimeOnly 'org.postgresql:postgresql:42.7.3'
+
+  // Hibernate Validator
+  implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+
+  // 테스트
+  testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
 
 test {
-  useJUnitPlatform()}
+  useJUnitPlatform()
+}

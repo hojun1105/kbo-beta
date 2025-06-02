@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>KBO 팬 허브 - 회원가입</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+
+    .navbar {
+      background-color: #0a0a23;
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .navbar-brand {
+      color: white;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    .logo-img {
+      height: 60px;
+      vertical-align: middle;
+    }
+
+    .nav-group-left,
+    .nav-group-right {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 6px 0;
+      border-bottom: 3px solid transparent;
+      transition: border 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      border-bottom: 3px solid #c30452;
+    }
+
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: black;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"],
+    .login-container input[type="email"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 1px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+
+    .login-container button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      margin: 10px 0;
+      font-size: 16px;
+      background-color: #0457a9;
+      border: none;
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      border-radius: 30px;
+    }
+
+    .login-container button:hover {
+      background-color: #0062c6;
+    }
+
+    .login-container .link {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .login-container .link a {
+      color: #0a0a23;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<div class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="navbar-brand">
+      <img src="/images/kbo.png" alt="KBO 팬 허브 로고" class="logo-img">
+    </a>
+    <div class="nav-group-left">
+      <a href="/html/predict.html" class="nav-link">오늘의 경기</a>
+      <a href="/html/playerStat.html" class="nav-link">선수별 분석</a>
+      <a href="#" class="nav-link">자료실</a>
+    </div>
+  </div>
+  <div class="nav-group-right">
+    <a href="/" class="nav-link">홈</a>
+    <a href="#" class="nav-link">경기일정</a>
+    <a href="/html/login.html" class="nav-link">로그인</a>
+  </div>
+</div>
+
+<!-- 회원가입 폼 -->
+<div class="login-container">
+  <h2>회원가입</h2>
+  <form action="/signup" method="post">
+    <input type="text" name="userId" placeholder="아이디" required>
+    <input type="password" name="password" placeholder="비밀번호" required>
+    <input type="email" name="email" placeholder="이메일" required>
+    <button type="submit">회원가입</button>
+  </form>
+  <div class="link">
+    이미 계정이 있으신가요? <a href="/html/login.html">로그인</a>
+  </div>
+</div>
+
+</body>
+</html>
