@@ -9,70 +9,36 @@
     body {
       margin: 0;
       font-family: 'Noto Sans KR', sans-serif;
-      background-color: #f5f5f5;
-      color: #222;
-    }
-
-    .navbar {
       background-color: #0a0a23;
-      padding: 0 40px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .navbar-left {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-    }
-
-    .navbar-brand {
-      color: white;
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-
-    .logo-img {
-      height: 60px;
-      vertical-align: middle;
-    }
-
-    .nav-group-left,
-    .nav-group-right {
-      display: flex;
-      gap: 20px;
-    }
-
-    .nav-link {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 6px 0;
-      border-bottom: 3px solid transparent;
-      transition: border 0.2s ease;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      border-bottom: 3px solid #c30452;
+      color: #222;
     }
 
     .login-container {
       max-width: 400px;
-      margin: 80px auto;
+      margin: 200px auto;
       background: white;
       padding: 30px 40px;
-      border-radius: 12px;
+      border-radius: 8px;
       box-shadow: 0 0 12px rgba(0,0,0,0.08);
     }
 
-    .login-container h2 {
-      text-align: center;
-      margin-bottom: 30px;
+    .login-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .login-header h2 {
+      margin: 0;
+      font-size: 22px;
       color: black;
+      padding-top: 10px;
+    }
+
+    .login-logo {
+      height: 36px;
+      cursor: pointer;
     }
 
     .login-container input[type="text"],
@@ -87,11 +53,61 @@
       border: 1px solid #ccc;
     }
 
-    .login-container button {
+    .email-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .email-row input[type="email"] {
+      flex: 1;
+      height: 46px;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 1px;
+      box-sizing: border-box;
+    }
+
+    .code-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .code-row input[type="text"] {
+      flex: 1;
+      height: 46px;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 1px;
+      box-sizing: border-box;
+    }
+    .verify-btn {
+      height: 46px;
+      padding: 0 16px;
+      font-size: 14px;
+      background-color: #c30452;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .verify-btn:hover {
+      background-color: #a00245;
+    }
+
+    .login-container button[type="submit"] {
       width: 100%;
       box-sizing: border-box;
       padding: 14px;
-      margin: 10px 0;
+      margin-top: 10px;
       font-size: 16px;
       background-color: #0457a9;
       border: none;
@@ -101,7 +117,7 @@
       border-radius: 30px;
     }
 
-    .login-container button:hover {
+    .login-container button[type="submit"]:hover {
       background-color: #0062c6;
     }
 
@@ -116,42 +132,136 @@
       color: #0a0a23;
       text-decoration: underline;
     }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+
+    .success-message {
+      color: green;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    button[type="submit"]:disabled {
+      background-color: #bbb;
+      cursor: not-allowed;
+      color: white;
+      opacity: 0.6;
+    }
   </style>
 </head>
 <body>
 
-<!-- 네비게이션 바 -->
-<div class="navbar">
-  <div class="navbar-left">
-    <a href="/" class="navbar-brand">
-      <img src="/images/kbo.png" alt="KBO 팬 허브 로고" class="logo-img">
-    </a>
-    <div class="nav-group-left">
-      <a href="/html/predict.html" class="nav-link">오늘의 경기</a>
-      <a href="/html/playerStat.html" class="nav-link">선수별 분석</a>
-      <a href="#" class="nav-link">자료실</a>
-    </div>
-  </div>
-  <div class="nav-group-right">
-    <a href="/" class="nav-link">홈</a>
-    <a href="#" class="nav-link">경기일정</a>
-    <a href="/html/login.html" class="nav-link">로그인</a>
-  </div>
-</div>
-
-<!-- 회원가입 폼 -->
 <div class="login-container">
-  <h2>회원가입</h2>
+  <div class="login-header">
+    <h2>회원가입</h2>
+    <a href="/html/main.html">
+      <img src="/images/kbo.png" alt="KBO 로고" class="login-logo">
+    </a>
+  </div>
+
+  <div id="errorBox" class="error-message" style="display: none;"></div>
+
   <form action="/signup" method="post">
+    <input type="text" name="nickname" placeholder="닉네임" required>
     <input type="text" name="userId" placeholder="아이디" required>
     <input type="password" name="password" placeholder="비밀번호" required>
-    <input type="email" name="email" placeholder="이메일" required>
-    <button type="submit">회원가입</button>
+
+    <div class="email-row">
+      <input type="email" id="email" name="email" placeholder="이메일" required>
+      <button type="button" class="verify-btn" onclick="sendVerification()">이메일 인증</button>
+    </div>
+
+    <div id="successMessage" class="success-message" style="display: none;"></div>
+    <div id="codeBox" style="display:none;">
+      <div class="code-row">
+        <input type="text" id="verifyCode" placeholder="인증 코드 입력" required>
+        <button type="button" id="verifyBtn" class="verify-btn">코드 확인</button>
+      </div>
+    </div>
+    <button type="submit" id="submitBtn" disabled>회원가입</button>
   </form>
+
   <div class="link">
     이미 계정이 있으신가요? <a href="/html/login.html">로그인</a>
   </div>
 </div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("error") === "1") {
+    document.getElementById("errorBox").textContent = "계정이 이미 존재합니다.";
+    document.getElementById("errorBox").style.display = "block";
+  }
+
+  function sendVerification() {
+    const email = document.getElementById('email').value;
+    if (!email) {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+
+    fetch('/sendVerification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `email=${encodeURIComponent(email)}`
+    })
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById("successMessage").textContent = data;
+              document.getElementById("successMessage").style.display = "block";
+              document.getElementById("codeBox").style.display = "block";
+            })
+            .catch(error => {
+              console.error("인증 요청 실패:", error);
+              alert("인증 요청 중 오류가 발생했습니다.");
+            });
+  }
+
+  function verifyCode() {
+    const email = document.getElementById('email').value;
+    const code = document.getElementById('verifyCode').value;
+
+    if (!code) {
+      alert("인증 코드를 입력해주세요.");
+      return;
+    }
+
+    fetch('/verifyCode', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`
+    })
+            .then(response => response.text())
+            .then(data => {
+              console.log("서버 응답:", data);  // <- 콘솔 확인용
+              document.getElementById("successMessage").textContent = data;
+              document.getElementById("successMessage").style.display = "block";
+
+              if (data.includes("성공")) {
+                document.getElementById("codeBox").style.display = "none"; // 전체 숨기기
+                document.getElementById("submitBtn").disabled = false;
+              }
+            })
+            .catch(error => {
+              console.error("코드 확인 실패:", error);
+              alert("코드 확인 중 오류가 발생했습니다.");
+            });
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("verifyBtn").addEventListener("click", verifyCode);
+  });
+</script>
 
 </body>
 </html>

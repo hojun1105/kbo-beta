@@ -22,17 +22,19 @@ public class SignupController {
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestParam("userId") String userId,
+    public String signup(@RequestParam("nickname") String nickname,
+                         @RequestParam("userId") String userId,
                          @RequestParam("password") String password,
                          @RequestParam("email") String email) {
 
-        User user = new User(userId, password, email);
+        User user = new User(userId, nickname, password, email);
         boolean success = userService.register(user);
 
         if (success) {
-            return "redirect:/login";
+            return "redirect:/html/login.html";
         } else {
-            return "signup"; // 다시 회원가입 화면
+            return "redirect:/html/signup.html?error=1"; // 실패 시 메시지 전달
         }
     }
+
 }

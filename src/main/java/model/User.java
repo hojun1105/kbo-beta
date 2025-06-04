@@ -13,6 +13,9 @@ public class User {
     @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 
+    @Column(name="nickname")
+    private String nickname;
+
     @Column(nullable = false)
     private String password;
 
@@ -21,8 +24,9 @@ public class User {
 
     public User() {}
 
-    public User(String userId, String password, String email) {
+    public User(String userId,String nickname, String password, String email) {
         this.userId = userId;
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
     }

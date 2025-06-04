@@ -19,6 +19,6 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>html/main.html</welcome-file>
+        <welcome-file>views/main.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
