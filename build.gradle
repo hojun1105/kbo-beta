@@ -21,6 +21,7 @@ java {
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
+  options.compilerArgs << "-parameters"
 }
 
 dependencies {
@@ -51,6 +52,11 @@ dependencies {
   // Hibernate Validator
   implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 
+// 메일 관련 의존성
+  implementation 'org.springframework:spring-context-support:6.1.4'
+  implementation 'jakarta.mail:jakarta.mail-api:2.1.2'
+  runtimeOnly 'com.sun.mail:jakarta.mail:2.0.1'
+
   // 테스트
   testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
@@ -59,3 +65,4 @@ dependencies {
 test {
   useJUnitPlatform()
 }
+

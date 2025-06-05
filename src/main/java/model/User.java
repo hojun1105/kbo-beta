@@ -22,13 +22,17 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @Column(name="instagram_id")
+    private String instagramId;
+
     public User() {}
 
-    public User(String userId,String nickname, String password, String email) {
+    public User(String userId,String nickname, String password, String email, String instagramId) {
         this.userId = userId;
         this.nickname = nickname;
         this.password = password;
         this.email = email;
+        this.instagramId = instagramId;
     }
 
     // Getter/Setter
@@ -38,6 +42,14 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {
@@ -54,5 +66,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getInstagramId() {
+        return instagramId;
+    }
+
+    public void setInstagramId(String instagramId) {
+        this.instagramId = instagramId;
     }
 }

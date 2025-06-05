@@ -24,7 +24,7 @@
 </head>
 <body>
 <div class="container">
-    <img src="../images/hongchangki.jpeg" alt="홍창기 선수" class="player-image">
+    <img src="../../images/hongchangki.jpeg" alt="홍창기 선수" class="player-image">
     <h2>⚾ 홍창기 선수 최근 7경기 분석</h2>
 
     <div class="section">

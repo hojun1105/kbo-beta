@@ -81,12 +81,12 @@
 
 <div class="navbar">
     <div class="navbar-left">
-        <a href="../" class="navbar-brand">
+        <a href="../.." class="navbar-brand">
             <img src="${pageContext.request.contextPath}/images/kbo.png" alt="KBO 팬 허브 로고" class="logo-img">
         </a>
         <div class="nav-group-left">
-            <a href="../html/predict.html" class="nav-link">오늘의 경기</a>
-            <a href="../html/playerStat.html" class="nav-link">선수별 분석</a>
+            <a href="../../html/predict.html" class="nav-link">오늘의 경기</a>
+            <a href="../../html/playerStat.html" class="nav-link">선수별 분석</a>
             <a href="#" class="nav-link">자료실</a>
             <% if (userId!=null){%>
             <a href="#" class="nav-link">커뮤니티</a>
@@ -96,10 +96,10 @@
     </div>
     <div class="nav-group-right">
         <% if (userId != null) { %>
-        <a href="/myinfo.jsp" class="nav-link">내 정보</a>
+        <a href="<%= request.getContextPath() %>/userInfo" class="nav-link">내 정보</a>
         <a href="/logout" class="nav-link">로그아웃</a>
         <% } else { %>
-        <a href="../html/login.html" class="nav-link">로그인</a>
+        <a href="../../html/login.html" class="nav-link">로그인</a>
         <% } %>
     </div>
 </div>

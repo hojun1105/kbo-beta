@@ -15,6 +15,13 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    public User getUserById(String user_id) {
+        if(userDao.findById(user_id).isPresent()) {
+            return userDao.findById(user_id).get();
+        }
+        return null;
+    }
+
     public boolean register(User user) {
         if (userDao.findById(user.getUserId()).isPresent()) {
             return false; // 중복 아이디

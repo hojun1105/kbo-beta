@@ -27,7 +27,7 @@ public class SignupController {
                          @RequestParam("password") String password,
                          @RequestParam("email") String email) {
 
-        User user = new User(userId, nickname, password, email);
+        User user = new User(userId, nickname, password, email,null);
         boolean success = userService.register(user);
 
         if (success) {

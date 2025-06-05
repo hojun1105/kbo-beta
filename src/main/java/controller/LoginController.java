@@ -24,7 +24,7 @@ public class LoginController {
         User user = userService.login(userId, password);
         if (user != null) {
             session.setAttribute("userId", user.getUserId());
-            return "redirect:/views/main.jsp";
+            return "redirect:/";
         } else {
             return "redirect:/html/login.html?error=1"; // 실패 시 메시지 전달
         }
