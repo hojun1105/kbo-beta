@@ -22,6 +22,20 @@ public class UserService {
         return null;
     }
 
+    public void updateUserInfo(String userId, User form) {
+        User user = userDao.findById(userId).orElse(null);
+        if(user != null) {
+            user.setNickname(form.getNickname());
+            user.setEmail(form.getEmail());
+            user.setInstagramId(form.getInstagramId());
+            userDao.save(user);
+        }
+    }
+
+    public void deleteUserById(String userId) {
+        userDao.deleteById(userId);
+    }
+
     public boolean register(User user) {
         if (userDao.findById(user.getUserId()).isPresent()) {
             return false; // 중복 아이디
