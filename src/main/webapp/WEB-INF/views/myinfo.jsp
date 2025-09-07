@@ -14,58 +14,88 @@
             background-color: #0a0a23;
             color: #222;
         }
+
         .container {
-            max-width: 700px;
-            margin: 60px auto;
+            max-width: 480px;
+            margin: 120px auto;
             background: white;
-            padding: 40px;
+            padding: 40px 50px;
             border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
         }
-        h2 {
+
+        .login-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            margin: 0;
+            font-size: 22px;
             color: black;
+            line-height: 1;
         }
+
+        .login-logo {
+            height: 36px;
+            cursor: pointer;
+        }
+
         .info-row {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
+
         .info-label {
-            display: inline-block;
-            width: 120px;
+            display: block;
             font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
         }
+
         input {
-            padding: 8px;
-            width: 300px;
+            padding: 12px;
+            width: 100%;
             font-size: 14px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
         }
+
         .btn {
             margin-top: 20px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 14px;
             background-color: #0457a9;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 30px;
             cursor: pointer;
             transition: background-color 0.3s;
+            width: 48%;
         }
+
         .btn:hover {
             background-color: #0062c6;
         }
+
         .btn.edit-active {
             background-color: #28a745 !important;
         }
+
         .btn-danger {
             background-color: #c30452;
         }
+
         .btn-danger:hover {
             background-color: #a00245;
         }
-        .note {
-            font-size: 12px;
-            color: gray;
-            margin-top: -10px;
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
         }
     </style>
 </head>
@@ -73,34 +103,37 @@
 <div class="container">
     <div class="login-header">
         <h2>마이페이지</h2>
-
+        <a href="/">
+            <img src="/images/kbo.png" alt="KBO 로고" class="login-logo">
+        </a>
     </div>
+
     <form id="userForm" action="/updateUser" method="post">
         <div class="info-row">
-            <label class="info-label">아이디:</label>
+            <label class="info-label">아이디</label>
             <input type="text" name="userId" value="${user.userId}" readonly>
         </div>
 
         <div class="info-row">
-            <label class="info-label">닉네임:</label>
+            <label class="info-label">닉네임</label>
             <input type="text" id="nickname" name="nickname" value="${user.nickname}" readonly>
         </div>
 
         <div class="info-row">
-            <label class="info-label">이메일:</label>
+            <label class="info-label">이메일</label>
             <input type="email" id="email" name="email" value="${user.email}" readonly>
         </div>
 
         <div class="info-row">
-            <label class="info-label">인스타그램:</label>
+            <label class="info-label">인스타그램</label>
             <input type="text" id="instagram" name="instagramId" value="${user.instagramId}" readonly placeholder="@yourid">
         </div>
+
         <div class="button-group">
             <button type="button" id="editBtn" class="btn" onclick="toggleEdit()">정보 수정</button>
             <button type="submit" formaction="/deleteUser" formmethod="get" class="btn btn-danger">회원 탈퇴</button>
         </div>
     </form>
-
 </div>
 
 <script>
@@ -111,9 +144,9 @@
         fields.forEach(id => {
             const input = document.getElementById(id);
             if (!isEditable) {
-                input.removeAttribute("readonly"); // 읽기전용 해제
+                input.removeAttribute("readonly");
             } else {
-                input.setAttribute("readonly", "true"); // 다시 읽기전용으로 되돌릴 경우
+                input.setAttribute("readonly", "true");
             }
         });
 
@@ -128,7 +161,6 @@
             document.getElementById("userForm").submit();
         }
     }
-
 </script>
 </body>
 </html>

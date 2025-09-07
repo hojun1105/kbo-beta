@@ -75,7 +75,18 @@
 
         .content h2 {
             color: #c30452;
-        }    </style>
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -87,7 +98,7 @@
         <div class="nav-group-left">
             <a href="../../html/predict.html" class="nav-link">오늘의 경기</a>
             <a href="../../html/playerStat.html" class="nav-link">선수별 분석</a>
-            <a href="#" class="nav-link">자료실</a>
+            <a href="/record" class="nav-link">자료실</a>
             <% if (userId!=null){%>
             <a href="#" class="nav-link">커뮤니티</a>
             <% } else { %>
@@ -109,6 +120,8 @@
     <h2>오늘의 트윈스</h2>
     <p>경기 예측과 선수 분석 정보를 이곳에서 확인하세요!</p>
 </div>
-
+<footer>
+    © 2025 KBO 팬허브
+</footer>
 </body>
 </html>

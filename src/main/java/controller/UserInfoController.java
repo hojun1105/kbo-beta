@@ -37,7 +37,7 @@ public class UserInfoController {
     public String updateUser(User userForm, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/login.jsp";  // 세션 없으면 로그인으로
+            return "redirect:/html/login.html";
         }
 
         userService.updateUserInfo(userId, userForm);
@@ -49,7 +49,7 @@ public class UserInfoController {
         String userId = (String) session.getAttribute("userId");
 
         if (userId == null) {
-            return "redirect:/login.jsp";
+            return "redirect:/html/login.html";
         }
         userService.deleteUserById(userId);
         session.invalidate();
