@@ -10,27 +10,83 @@
             padding: 40px;
         }
 
+        h2 {
+            color: #0a0a23;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background-color: #fff;
+            border: 2px solid #0a0a23;
+            color: #0a0a23;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .tab-btn:hover {
+            background-color: #0a0a23;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 10, 35, 0.3);
+        }
+
+        .tab-btn.active {
+            background-color: #0a0a23;
+            color: white;
+            box-shadow: 0 4px 12px rgba(10, 10, 35, 0.3);
+        }
+
+        .tab-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
         }
 
         th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            font-size: 13px;
+            padding: 15px 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
             text-align: center;
         }
 
         th {
             background-color: #0a0a23;
             color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         tr:hover {
-            background-color: #f9f9f9;
+            background-color: #f8f9fa;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tr:nth-child(even):hover {
+            background-color: #f0f0f0;
         }
     </style>
     <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
@@ -76,7 +132,7 @@
 </div>
 <!-- 투수 기록 -->
 <div id="pitching" class="tab-content" style="display:none;">
-    <table>
+    <table class="sortable">
         <thead>
         <tr>
             <th>선수명</th><th>팀명</th><th>ERA</th><th>G</th><th>W</th><th>L</th><th>SV</th><th>IP</th><th>SO</th>

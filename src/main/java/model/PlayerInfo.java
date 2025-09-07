@@ -51,4 +51,7 @@ public class PlayerInfo {
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<HitterStat> hitterStats = new ArrayList<>();
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private List<PitcherStat> pitcherStats = new ArrayList<>();
 }
