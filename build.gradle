@@ -41,7 +41,6 @@ dependencies {
   // Spring ORM (JPA 연동)
   implementation 'org.springframework:spring-orm:6.1.4'
 
-  // Hibernate + JPA API
   implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
   implementation 'org.hibernate.orm:hibernate-core:6.4.1.Final'
   implementation 'org.springframework.data:spring-data-jpa:3.2.4'
@@ -49,7 +48,6 @@ dependencies {
   // JDBC 드라이버
   runtimeOnly 'org.postgresql:postgresql:42.7.3'
 
-  // Hibernate Validator
   implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 
 // 메일 관련 의존성
@@ -57,7 +55,9 @@ dependencies {
   implementation 'jakarta.mail:jakarta.mail-api:2.1.2'
   runtimeOnly 'com.sun.mail:jakarta.mail:2.0.1'
 
-  // 테스트
+  compileOnly 'org.projectlombok:lombok:1.18.32'
+  annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
   testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 }

@@ -10,7 +10,6 @@ public class UserService {
 
     private final UserDAO userDao;
 
-    @Autowired
     public UserService(UserDAO userDao) {
         this.userDao = userDao;
     }
