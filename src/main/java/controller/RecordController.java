@@ -1,6 +1,7 @@
 package controller;
 
 import model.HitterStat;
+import model.PitcherStat;
 import model.PlayerStat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,9 @@ public class RecordController {
     @GetMapping("/record")
     public String showRecords(Model model) {
         List<HitterStat> records = recordService.getAllRecords();
+        List<PitcherStat> pitchers = recordService.getAllPitcherRecords();
         model.addAttribute("records", records);
+        model.addAttribute("pitchers", pitchers);
         return "record"; // → /WEB-INF/views/record.jsp
     }
 }
