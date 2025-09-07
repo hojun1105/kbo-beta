@@ -11,3 +11,4 @@ public interface PitcherStatDAO extends JpaRepository<PitcherStat, String> {
     @EntityGraph(attributePaths = {"player","player.team"})
     List<PitcherStat> findAllByOrderByDateDesc();
 }
+
