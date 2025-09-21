@@ -1,9 +1,9 @@
-package controller;
+package org.example.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import service.EmailService;
-import service.VerificationService;
+import org.example.service.EmailService;
+import org.example.service.VerificationService;
 
 @Controller
 public class EmailVerificationController {

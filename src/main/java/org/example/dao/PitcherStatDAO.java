@@ -1,6 +1,6 @@
-package dao;
+package org.example.dao;
 
-import model.PitcherStat;
+import org.example.model.PitcherStat;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

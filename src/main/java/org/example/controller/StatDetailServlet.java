@@ -1,4 +1,4 @@
-package controller;
+package org.example.controller;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.*;
 
-import model.PlayerStat;
+import org.example.model.PlayerStat;
 
 @WebServlet("/stat-detail")
 public class StatDetailServlet extends HttpServlet {
