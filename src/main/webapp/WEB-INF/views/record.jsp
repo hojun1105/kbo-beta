@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>KBO 선수 기록</title>
@@ -173,16 +174,16 @@
         <label for="teamFilter" style="font-size:13px;color:#444;">팀</label>
         <select id="teamFilter" style="padding:8px 10px;border:1px solid #cfd4dc;border-radius:8px;background:#fff;min-width:160px;font-size:14px;">
             <option value="">전체</option>
-            <option value="두산 베어스">두산 베어스</option>
-            <option value="LG 트윈스">LG 트윈스</option>
-            <option value="키움 히어로즈">키움 히어로즈</option>
-            <option value="SSG 랜더스">SSG 랜더스</option>
-            <option value="한화 이글스">한화 이글스</option>
-            <option value="NC 다이노스">NC 다이노스</option>
-            <option value="롯데 자이언츠">롯데 자이언츠</option>
-            <option value="삼성 라이온즈">삼성 라이온즈</option>
-            <option value="KIA 타이거즈">KIA 타이거즈</option>
-            <option value="kt 위즈">kt 위즈</option>
+            <option value="Doosan Bears">두산 베어스</option>
+            <option value="LG Twins">LG 트윈스</option>
+            <option value="Kiwoom Heroes">키움 히어로즈</option>
+            <option value="SSG Landers">SSG 랜더스</option>
+            <option value="Hanwha Eagles">한화 이글스</option>
+            <option value="NC Dinos">NC 다이노스</option>
+            <option value="Lotte Giants">롯데 자이언츠</option>
+            <option value="Samsung Lions">삼성 라이온즈</option>
+            <option value="KIA Tigers">KIA 타이거즈</option>
+            <option value="KT Wiz">kt 위즈</option>
         </select>
     </div>
     <div class="filter-group" id="positionFilterGroup" style="display:flex;flex-direction:column;gap:6px;">
@@ -196,6 +197,7 @@
         </select>
     </div>
     <div class="view-modes" style="display:flex;gap:8px;margin-left:auto;">
+        <button id="testFilter" class="test-btn" type="button" style="background:#e3f2fd;color:#1976d2;border:1px solid #bbdefb;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:12px;">테스트</button>
         <button id="resetFilters" class="reset-btn" type="button" style="background:#f1f3f5;color:#0a0a23;border:1px solid #cfd4dc;padding:8px 14px;border-radius:8px;cursor:pointer;">초기화</button>
     </div>
     <hr style="margin-top:20px; border:none; border-top:1px solid #e5e5e5; width:100%"/>
@@ -233,6 +235,19 @@
         </tr>
     </c:forEach>
     </tbody>
+    
+    <!-- 디버깅용 정보 -->
+    <script>
+        console.log('JSP에서 전달된 데이터:');
+        console.log('타자 기록 개수:', <c:out value="${fn:length(records)}" default="0"/>);
+        console.log('투수 기록 개수:', <c:out value="${fn:length(pitchers)}" default="0"/>);
+        <c:if test="${fn:length(records) > 0}">
+        console.log('첫 번째 타자 정보:');
+        console.log('- 이름:', '<c:out value="${records[0].player.name}"/>');
+        console.log('- 팀:', '<c:out value="${records[0].player.team.name}"/>');
+        console.log('- 포지션:', '<c:out value="${records[0].player.position}"/>');
+        </c:if>
+    </script>
 </table>
 </div>
 <!-- 투수 기록 -->
@@ -258,6 +273,17 @@
             </tr>
         </c:forEach>
         </tbody>
+        
+        <!-- 디버깅용 정보 -->
+        <script>
+            console.log('투수 데이터 디버깅:');
+            <c:if test="${fn:length(pitchers) > 0}">
+            console.log('첫 번째 투수 정보:');
+            console.log('- 이름:', '<c:out value="${pitchers[0].player.name}"/>');
+            console.log('- 팀:', '<c:out value="${pitchers[0].player.team.name}"/>');
+            console.log('- 포지션:', '<c:out value="${pitchers[0].player.position}"/>');
+            </c:if>
+        </script>
     </table>
 </div>
 </body>
@@ -274,12 +300,15 @@
         
         // 포지션 필터 표시/숨김 처리
         const positionFilterGroup = document.getElementById('positionFilterGroup');
+        const positionFilter = document.getElementById('positionFilter');
         if (tabId === 'hitting') {
             positionFilterGroup.style.display = 'flex';
         } else if (tabId === 'pitching') {
             positionFilterGroup.style.display = 'none';
             // 포지션 필터 초기화
-            positionFilter.value = '';
+            if (positionFilter) {
+                positionFilter.value = '';
+            }
         }
         
         populateOptions();
@@ -300,58 +329,126 @@
     }
 
     function applyFilters() {
-        const activeTab = document.querySelector('.tab-btn.active').textContent.toLowerCase();
-        const rows = document.querySelectorAll(activeTab === 'hitting' ? '#hitting tbody tr' : '#pitching tbody tr');
-        const team = (teamFilter.value || '').trim();
-        const position = (positionFilter.value || '').trim();
+        const activeTab = document.querySelector('.tab-btn.active');
+        if (!activeTab) {
+            console.log('활성 탭을 찾을 수 없습니다.');
+            return;
+        }
+        
+        const tabName = activeTab.textContent.toLowerCase();
+        const rows = document.querySelectorAll(tabName === 'hitting' ? '#hitting tbody tr' : '#pitching tbody tr');
+        const team = (teamFilter ? teamFilter.value || '' : '').trim();
+        const position = (positionFilter ? positionFilter.value || '' : '').trim();
 
-        rows.forEach(row => {
+        console.log('필터 적용:', { tabName, team, position, rowsCount: rows.length });
+
+        let visibleCount = 0;
+        rows.forEach((row, index) => {
             const rt = (row.getAttribute('data-team') || '').trim();
             const rp = (row.getAttribute('data-position') || '').trim();
             
             let positionMatch = true;
-            if (position && activeTab === 'hitting') {
+            if (position && tabName === 'hitting') {
+                // 괄호 앞부분만 추출
+                const basePosition = rp.split('(')[0];
+
                 if (position === '내야수') {
-                    positionMatch = ['1루수', '2루수', '3루수', '유격수'].includes(rp);
+                    positionMatch = basePosition === "내야수";
                 } else if (position === '외야수') {
-                    positionMatch = ['좌익수', '중견수', '우익수'].includes(rp);
+                    positionMatch = basePosition === "외야수";
                 } else if (position === '포수') {
-                    positionMatch = rp === '포수';
+                    positionMatch = basePosition === '포수';
                 } else if (position === '지명타자') {
-                    positionMatch = rp === '지명타자';
+                    positionMatch = basePosition === '지명타자';
                 } else {
-                    positionMatch = position === rp;
+                    positionMatch = (position === basePosition);
                 }
-            } else if (activeTab === 'pitching') {
+            } else if (tabName === 'pitching') {
                 // Pitching 탭에서는 포지션 필터 무시 (모든 투수 표시)
                 positionMatch = true;
             }
             
-            const show = (!team || team === rt) && positionMatch;
+            const teamMatch = !team || team === rt;
+            const show = teamMatch && positionMatch;
+            
             row.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+            
+            // 디버깅용 로그 (처음 3개 행만)
+            if (index < 3) {
+                console.log(`행 ${index + 1} 필터링:`, { 
+                    name: row.cells[0]?.textContent, 
+                    rt, rp, teamMatch, positionMatch, show 
+                });
+            }
         });
+        
+        console.log(`필터링 완료: ${visibleCount}/${rows.length} 행이 표시됨`);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
         populateOptions();
         applyFilters();
-        teamFilter.addEventListener('change', applyFilters);
-        positionFilter.addEventListener('change', applyFilters);
-        document.getElementById('resetFilters').addEventListener('click', () => {
-            teamFilter.value = '';
-            positionFilter.value = '';
-            applyFilters();
-        });
         
-        // 디버깅용: 실제 포지션 데이터 확인
-        console.log('실제 포지션 데이터:');
+        if (teamFilter) {
+            teamFilter.addEventListener('change', applyFilters);
+        }
+        if (positionFilter) {
+            positionFilter.addEventListener('change', applyFilters);
+        }
+        
+        const resetButton = document.getElementById('resetFilters');
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                if (teamFilter) teamFilter.value = '';
+                if (positionFilter) positionFilter.value = '';
+                applyFilters();
+            });
+        }
+        
+        const testButton = document.getElementById('testFilter');
+        if (testButton) {
+            testButton.addEventListener('click', () => {
+                console.log('=== 필터 테스트 시작 ===');
+                console.log('현재 팀 필터:', teamFilter ? teamFilter.value : 'null');
+                console.log('현재 포지션 필터:', positionFilter ? positionFilter.value : 'null');
+                
+                // 테스트: LG 트윈스 필터링
+                if (teamFilter) {
+                    teamFilter.value = 'LG 트윈스';
+                    console.log('LG 트윈스로 필터링 테스트');
+                    applyFilters();
+                }
+            });
+        }
+        
+        // 디버깅용: 실제 데이터 확인
+        console.log('=== 디버깅 정보 ===');
+        console.log('타자 데이터 개수:', document.querySelectorAll('#hitting tbody tr').length);
+        console.log('투수 데이터 개수:', document.querySelectorAll('#pitching tbody tr').length);
+        
+        // 타자 포지션 데이터 확인
+        console.log('타자 포지션 데이터:');
         const hittingRows = document.querySelectorAll('#hitting tbody tr');
         const positions = new Set();
+        const teams = new Set();
         hittingRows.forEach(row => {
             const pos = row.getAttribute('data-position');
+            const team = row.getAttribute('data-team');
             if (pos) positions.add(pos);
+            if (team) teams.add(team);
         });
-        console.log(Array.from(positions));
+        console.log('포지션:', Array.from(positions));
+        console.log('팀:', Array.from(teams));
+        
+        // 첫 번째 행의 상세 정보 확인
+        if (hittingRows.length > 0) {
+            const firstRow = hittingRows[0];
+            console.log('첫 번째 타자 행 정보:');
+            console.log('- data-team:', firstRow.getAttribute('data-team'));
+            console.log('- data-position:', firstRow.getAttribute('data-position'));
+            console.log('- 실제 HTML:', firstRow.outerHTML);
+        }
     });
 </script>
 </html>
