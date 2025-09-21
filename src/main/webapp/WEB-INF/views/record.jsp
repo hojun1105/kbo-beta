@@ -83,83 +83,83 @@
         }
 
         /* KBO 팀별 색상 */
-        tr[data-team="두산 베어스"] {
+        tr[data-team="Doosan Bears"] {
             background-color: #131230;
             color: white;
         }
-        tr[data-team="두산 베어스"]:hover {
+        tr[data-team="Doosan Bears"]:hover {
             background-color: #1a1a3a;
         }
         
-        tr[data-team="LG 트윈스"] {
+        tr[data-team="LG Twins"] {
             background-color: #c30452;
             color: white;
         }
-        tr[data-team="LG 트윈스"]:hover {
+        tr[data-team="LG Twins"]:hover {
             background-color: #d3055a;
         }
         
-        tr[data-team="키움 히어로즈"] {
+        tr[data-team="Kiwoom Heroes"] {
             background-color: #570514;
             color: white;
         }
-        tr[data-team="키움 히어로즈"]:hover {
+        tr[data-team="Kiwoom Heroes"]:hover {
             background-color: #67061a;
         }
         
-        tr[data-team="SSG 랜더스"] {
+        tr[data-team="SSG Landers"] {
             background-color: #ce0e2d;
             color: white;
         }
-        tr[data-team="SSG 랜더스"]:hover {
+        tr[data-team="SSG Landers"]:hover {
             background-color: #de1e3d;
         }
         
-        tr[data-team="한화 이글스"] {
+        tr[data-team="Hanwha Eagles"] {
             background-color: #ff6600;
             color: white;
         }
-        tr[data-team="한화 이글스"]:hover {
+        tr[data-team="Hanwha Eagles"]:hover {
             background-color: #ff7700;
         }
         
-        tr[data-team="NC 다이노스"] {
+        tr[data-team="NC Dinos"] {
             background-color: #315288;
             color: white;
         }
-        tr[data-team="NC 다이노스"]:hover {
+        tr[data-team="NC Dinos"]:hover {
             background-color: #416298;
         }
         
-        tr[data-team="롯데 자이언츠"] {
+        tr[data-team="Lotte Giants"] {
             background-color: #041e42;
             color: white;
         }
-        tr[data-team="롯데 자이언츠"]:hover {
+        tr[data-team="Lotte Giants"]:hover {
             background-color: #142e52;
         }
         
-        tr[data-team="삼성 라이온즈"] {
+        tr[data-team="Samsung Lions"] {
             background-color: #1d4d72;
             color: white;
         }
-        tr[data-team="삼성 라이온즈"]:hover {
+        tr[data-team="Samsung Lions"]:hover {
             background-color: #2d5d82;
         }
         
-        tr[data-team="KIA 타이거즈"] {
+        tr[data-team="KIA Tigers"] {
             background-color: #ea0029;
             color: white;
         }
-        tr[data-team="KIA 타이거즈"]:hover {
+        tr[data-team="KIA Tigers"]:hover {
             background-color: #fa1039;
         }
         
-        tr[data-team="kt 위즈"] {
+        tr[data-team="KT Wiz"] {
             background-color: #000000;
             color: white;
         }
-        tr[data-team="kt 위즈"]:hover {
+        tr[data-team="KT Wiz"]:hover {
             background-color: #1a1a1a;
         }
     </style>
@@ -349,7 +349,6 @@
             
             let positionMatch = true;
             if (position && tabName === 'hitting') {
-                // 괄호 앞부분만 추출
                 const basePosition = rp.split('(')[0];
 
                 if (position === '내야수') {
