@@ -82,85 +82,65 @@
             background-color: #f8f9fa;
         }
 
-        /* KBO 팀별 색상 */
-        tr[data-team="Doosan Bears"] {
+        /* KBO 팀별 색상 - 팀명 셀에만 적용 */
+        tr[data-team="Doosan Bears"] td:nth-child(2) {
             background-color: #131230;
             color: white;
-        }
-        tr[data-team="Doosan Bears"]:hover {
-            background-color: #1a1a3a;
+            font-weight: bold;
         }
         
-        tr[data-team="LG Twins"] {
+        tr[data-team="LG Twins"] td:nth-child(2) {
             background-color: #c30452;
             color: white;
-        }
-        tr[data-team="LG Twins"]:hover {
-            background-color: #d3055a;
+            font-weight: bold;
         }
         
-        tr[data-team="Kiwoom Heroes"] {
+        tr[data-team="Kiwoom Heroes"] td:nth-child(2) {
             background-color: #570514;
             color: white;
-        }
-        tr[data-team="Kiwoom Heroes"]:hover {
-            background-color: #67061a;
+            font-weight: bold;
         }
         
-        tr[data-team="SSG Landers"] {
+        tr[data-team="SSG Landers"] td:nth-child(2) {
             background-color: #ce0e2d;
             color: white;
-        }
-        tr[data-team="SSG Landers"]:hover {
-            background-color: #de1e3d;
+            font-weight: bold;
         }
         
-        tr[data-team="Hanwha Eagles"] {
+        tr[data-team="Hanwha Eagles"] td:nth-child(2) {
             background-color: #ff6600;
             color: white;
-        }
-        tr[data-team="Hanwha Eagles"]:hover {
-            background-color: #ff7700;
+            font-weight: bold;
         }
         
-        tr[data-team="NC Dinos"] {
+        tr[data-team="NC Dinos"] td:nth-child(2) {
             background-color: #315288;
             color: white;
-        }
-        tr[data-team="NC Dinos"]:hover {
-            background-color: #416298;
+            font-weight: bold;
         }
         
-        tr[data-team="Lotte Giants"] {
+        tr[data-team="Lotte Giants"] td:nth-child(2) {
             background-color: #041e42;
             color: white;
-        }
-        tr[data-team="Lotte Giants"]:hover {
-            background-color: #142e52;
+            font-weight: bold;
         }
         
-        tr[data-team="Samsung Lions"] {
+        tr[data-team="Samsung Lions"] td:nth-child(2) {
             background-color: #1d4d72;
             color: white;
-        }
-        tr[data-team="Samsung Lions"]:hover {
-            background-color: #2d5d82;
+            font-weight: bold;
         }
         
-        tr[data-team="KIA Tigers"] {
+        tr[data-team="KIA Tigers"] td:nth-child(2) {
             background-color: #ea0029;
             color: white;
-        }
-        tr[data-team="KIA Tigers"]:hover {
-            background-color: #fa1039;
+            font-weight: bold;
         }
         
-        tr[data-team="KT Wiz"] {
+        tr[data-team="KT Wiz"] td:nth-child(2) {
             background-color: #000000;
             color: white;
-        }
-        tr[data-team="KT Wiz"]:hover {
-            background-color: #1a1a1a;
+            font-weight: bold;
         }
     </style>
     <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
