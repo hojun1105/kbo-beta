@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page session="true" %>
 <%
@@ -98,7 +99,7 @@
         <div class="nav-group-left">
             <a href="../../html/predict.html" class="nav-link">오늘의 경기</a>
             <a href="../../html/playerStat.html" class="nav-link">선수별 분석</a>
-            <a href="/record" class="nav-link">자료실</a>
+            <a href="<c:url value="/record"/>" class="nav-link">자료실</a>
             <% if (userId!=null){%>
             <a href="#" class="nav-link">커뮤니티</a>
             <% } else { %>

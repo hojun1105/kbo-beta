@@ -9,7 +9,7 @@ public class VerificationService {
     private final ConcurrentHashMap<String, String> codeStore = new ConcurrentHashMap<>();
 
     public String generateCode(String email) {
-        String code = String.valueOf(new Random().nextInt(899999) + 100000); // 6자리 코드
+        var code = String.valueOf(new Random().nextInt(899999) + 100000); // 6자리 코드
         codeStore.put(email, code);
         return code;
     }
