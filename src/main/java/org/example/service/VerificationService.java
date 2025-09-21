@@ -1,4 +1,4 @@
-package service;
+package org.example.service;
 import org.springframework.stereotype.Service;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;

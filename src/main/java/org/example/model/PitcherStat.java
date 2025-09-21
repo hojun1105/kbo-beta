@@ -1,4 +1,4 @@
-package model;
+package org.example.model;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,21 +12,18 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(
-        name = "pitcher_stat_1",
-        schema = "kbo",
+        name = "pitcher_stat",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"player_id", "\"date\""})
         }
 )
 public class PitcherStat {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // BIGSERIAL
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // FK: player_info(id)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "player_id", referencedColumnName = "id", nullable = false)
     private PlayerInfo player;
 
     @Column(name = "\"date\"", nullable = false)  // 따옴표 컬럼
@@ -81,6 +78,6 @@ public class PitcherStat {
     private Integer earnedRuns;
 
     @Column(name = "whip")
-    private BigDecimal whip;               // NUMERIC(6,3)
+    private BigDecimal whip;
 }
 

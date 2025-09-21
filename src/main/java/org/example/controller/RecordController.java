@@ -1,12 +1,11 @@
-package controller;
+package org.example.controller;
 
-import model.HitterStat;
-import model.PitcherStat;
-import model.PlayerStat;
+import org.example.model.HitterStat;
+import org.example.model.PitcherStat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import service.RecordService;
+import org.example.service.RecordService;
 
 import java.util.List;
 

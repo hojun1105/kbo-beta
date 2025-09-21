@@ -1,10 +1,11 @@
-package model;
+package org.example.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
 @Entity
 @Table(
         name = "player_info",
-        schema = "kbo",
         uniqueConstraints = @UniqueConstraint(columnNames = {"name", "team_id"})
 )
 @Getter
@@ -22,7 +22,7 @@ public class PlayerInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;

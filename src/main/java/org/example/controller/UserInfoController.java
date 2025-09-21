@@ -1,12 +1,12 @@
-package controller;
+package org.example.controller;
 
 import jakarta.servlet.http.HttpSession;
-import model.User;
+import org.example.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import service.UserService;
+import org.example.service.UserService;
 
 @Controller
 public class UserInfoController {

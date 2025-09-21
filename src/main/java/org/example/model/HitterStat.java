@@ -1,4 +1,4 @@
-package model;
+package org.example.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Entity
 @Table(
         name = "hitter_stat",
-        schema = "kbo",
         uniqueConstraints = @UniqueConstraint(columnNames = {"player_id", "date"})
 )
 @Getter
@@ -24,7 +23,9 @@ public class HitterStat {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "player_id",
+            referencedColumnName = "id",
+            nullable = false)
     private PlayerInfo player;
 
     @Column(name = "date")

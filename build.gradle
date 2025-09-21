@@ -1,5 +1,7 @@
 plugins {
   id 'java'
+  id 'org.springframework.boot' version '3.3.4'
+  id 'io.spring.dependency-management' version '1.1.5'
   id 'war' // 톰캣 배포용
 }
 
@@ -15,54 +17,43 @@ ext {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_20
-  targetCompatibility = JavaVersion.VERSION_20
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
 }
-
-tasks.withType(JavaCompile) {
-  options.encoding = 'UTF-8'
-  options.compilerArgs << "-parameters"
-}
-
 dependencies {
-  // Servlet API - 톰캣에서 제공하므로 compileOnly
-  compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+  // Spring Boot Starter
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-  // JSP API
-  compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.1.0'
-
-  // JSTL
+  // JSP (Boot는 Thymeleaf 권장하지만 JSP도 가능)
+  implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
   implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
   implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 
-  // Spring MVC 6.x
-  implementation 'org.springframework:spring-webmvc:6.1.4'
+  // DB
 
-  // Spring ORM (JPA 연동)
-  implementation 'org.springframework:spring-orm:6.1.4'
+  // Validation
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-  implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
-  implementation 'org.hibernate.orm:hibernate-core:6.4.1.Final'
-  implementation 'org.springframework.data:spring-data-jpa:3.2.4'
+  // Mail
+  implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-  // JDBC 드라이버
+  // Lombok
+  compileOnly 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
   runtimeOnly 'org.postgresql:postgresql:42.7.3'
+  implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-  implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
-
-// 메일 관련 의존성
-  implementation 'org.springframework:spring-context-support:6.1.4'
-  implementation 'jakarta.mail:jakarta.mail-api:2.1.2'
-  runtimeOnly 'com.sun.mail:jakarta.mail:2.0.1'
-
-  compileOnly 'org.projectlombok:lombok:1.18.32'
-  annotationProcessor 'org.projectlombok:lombok:1.18.32'
-
-  testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+  // Test
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+tasks.named("bootRun") {
+  doLast{
+    java.awt.Desktop.desktop.browse(new URI("http://localhost:8080/"))
+  }
+}
 test {
   useJUnitPlatform()
 }
-

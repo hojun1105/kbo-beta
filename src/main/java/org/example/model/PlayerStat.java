@@ -1,4 +1,4 @@
-package model;
+package org.example.model;
 
 public record PlayerStat(
         String year,
