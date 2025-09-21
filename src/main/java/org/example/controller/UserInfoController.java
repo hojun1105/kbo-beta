@@ -1,6 +1,7 @@
 package org.example.controller;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +18,8 @@ public class UserInfoController {
     }
 
     @GetMapping("/userInfo")
-    public String getUserInfo(HttpSession session,Model model) {
-        String userId = (String) session.getAttribute("userId");
+    public String getUserInfo(HttpServletRequest request, Model model) {
+        String userId = (String) request.getAttribute("userId");
         if (userId == null) {
             return "redirect:/html/login.html";
         }
@@ -34,8 +35,8 @@ public class UserInfoController {
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(User userForm, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+    public String updateUser(User userForm, HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
         if (userId == null) {
             return "redirect:/html/login.html";
         }
@@ -45,15 +46,18 @@ public class UserInfoController {
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser(HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+    public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
+        String userId = (String) request.getAttribute("userId");
 
         if (userId == null) {
             return "redirect:/html/login.html";
         }
+        
         userService.deleteUserById(userId);
-        session.invalidate();
-
-        return "main";
+        
+        // 쿠키 삭제
+        response.addCookie(new jakarta.servlet.http.Cookie("token", ""));
+        
+        return "redirect:/";
     }
 }

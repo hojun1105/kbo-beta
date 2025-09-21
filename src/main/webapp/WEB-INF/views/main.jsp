@@ -1,9 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page session="true" %>
-<%
-    String userId = (String) session.getAttribute("userId");
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -97,22 +93,24 @@
             <img src="${pageContext.request.contextPath}/images/kbo.png" alt="KBO 팬 허브 로고" class="logo-img">
         </a>
         <div class="nav-group-left">
-            <a href="../../html/predict.html" class="nav-link">오늘의 경기</a>
-            <a href="../../html/playerStat.html" class="nav-link">선수별 분석</a>
-            <a href="<c:url value="/record"/>" class="nav-link">자료실</a>
-            <% if (userId!=null){%>
-            <a href="#" class="nav-link">커뮤니티</a>
-            <% } else { %>
-            <%}%>
+            <a href="<c:url value="/html/predict.html"/>" class="nav-link">오늘의 경기</a>
+            <a href="<c:url value="/html/playerStat.html"/>" class="nav-link">선수별 분석</a>
+            <c:if test="${isLoggedIn}">
+                <a href="<c:url value="/record"/>" class="nav-link">자료실</a>
+                <a href="#" class="nav-link">커뮤니티</a>
+            </c:if>
         </div>
     </div>
     <div class="nav-group-right">
-        <% if (userId != null) { %>
-        <a href="<%= request.getContextPath() %>/userInfo" class="nav-link">내 정보</a>
-        <a href="/logout" class="nav-link">로그아웃</a>
-        <% } else { %>
-        <a href="../../html/login.html" class="nav-link">로그인</a>
-        <% } %>
+        <c:choose>
+            <c:when test="${isLoggedIn}">
+                <a href="<c:url value="/userInfo"/>" class="nav-link">내 정보</a>
+                <a href="/logout" class="nav-link">로그아웃</a>
+            </c:when>
+            <c:otherwise>
+                <a href="../../html/login.html" class="nav-link">로그인</a>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 
