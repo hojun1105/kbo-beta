@@ -93,3 +93,21 @@ CREATE TABLE users (
                        email VARCHAR(255) NOT NULL,
                        instagram_id VARCHAR(255)
 );
+
+CREATE TABLE today_games(
+                    id BIGSERIAL PRIMARY KEY ,
+                    home_team_id INT REFERENCES team_info(id),
+                    home_team_ops NUMERIC(5,3),
+                    home_team_era NUMERIC(5,2),
+                    away_team_id INT REFERENCES team_info(id),
+                    away_team_ops NUMERIC(5,3),
+                    away_team_era NUMERIC(5,2),
+                    temperature NUMERIC(5,2),
+                    humidity NUMERIC(5,2)
+);
+
+CREATE TABLE game_predictions(
+            id BIGSERIAL PRIMARY KEY,
+            today_game_id BIGINT REFERENCES today_games(id),
+            predicted_winner INT REFERENCES team_info(id)
+)
