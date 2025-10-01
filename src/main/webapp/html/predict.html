@@ -7,18 +7,12 @@
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: repeating-linear-gradient(
-                    to bottom,
-                    #ffffff,
-                    #ffffff 30px,
-                    #eeeeee 31px,
-                    #ffffff 32px
-            );
+            background-color: #f5f5f5;
             color: #222;
             padding: 30px 15px;
         }
         .container {
-            max-width: 700px;
+            max-width: 900px;
             margin: auto;
             background: rgba(255,255,255,0.95);
             padding: 40px;
@@ -29,41 +23,81 @@
         h1 {
             text-align: center;
             color: #c30452;
-            margin-bottom: 10px;
+            margin-bottom: 40px;
+            font-size: 2em;
+        }
+        .game-container {
+            margin-bottom: 40px;
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         .matchup {
-            text-align: center;
-            font-size: 1.3em;
-            margin-bottom: 30px;
-        }
-        .result-box {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
             margin-bottom: 20px;
+            gap: 20px;
         }
-        .team {
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        .prob {
-            font-size: 1.1em;
-            color: #333;
-            margin-top: 5px;
-        }
-        .score {
-            font-size: 1.2em;
-            margin-top: 15px;
-            color: #555;
-        }
-        .summary {
-            font-size: 1em;
-            color: #444;
-            margin-top: 30px;
-            line-height: 1.6em;
+        .team-box {
+            flex: 1;
+            background: #fff;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            padding: 25px 20px;
             text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .team-box.winner {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border-color: #ffa500;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+            transform: scale(1.05);
+        }
+        .team-box.winner::before {
+            content: '🏆 승리 예측';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4500;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .team-name {
+            font-weight: bold;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        .team-stats {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.8em;
+        }
+        .vs-divider {
+            font-size: 2em;
+            font-weight: bold;
+            color: #c30452;
+            flex-shrink: 0;
+        }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #c30452;
+            font-size: 1.2em;
         }
         .btn-back {
             display: inline-block;
@@ -71,31 +105,94 @@
             text-decoration: none;
             background: #c30452;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 30px;
             border-radius: 12px;
+            font-size: 1.1em;
+            transition: background 0.3s ease;
+        }
+        .btn-back:hover {
+            background: #a00340;
+        }
+        .back-container {
+            text-align: center;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>오늘의 승부 예측</h1>
-    <div class="matchup">LG 트윈스 🆚 두산 베어스</div>
-
-    <div class="result-box">
-        <div class="team">LG 트윈스 승률</div>
-        <div class="prob">📈 67%</div>
-        <div class="score">예상 점수: LG 6 - 두산 4</div>
+    <h1>⚾ 오늘의 승부 예측</h1>
+    
+    <div id="games-container">
+        <div class="loading">경기 정보를 불러오는 중...</div>
     </div>
 
-    <div class="summary">
-        AI 분석 결과, LG 트윈스는 최근 5연승의 흐름과 선발 투수의 안정감으로<br>
-        두산에 비해 승률 67%의 우세한 판세를 보이고 있습니다.<br><br>
-        타선에서는 홍창기와 문성주의 출루율이 핵심 변수로 작용할 것으로 예상됩니다.
-    </div>
-
-    <div style="text-align: center;">
+    <div class="back-container">
         <a href="main.html" class="btn-back">← 돌아가기</a>
     </div>
 </div>
+
+<script>
+    // API에서 오늘의 경기 예측 데이터 가져오기
+    async function loadPredictions() {
+        try {
+            const response = await fetch('/api/prediction/today');
+            if (!response.ok) {
+                throw new Error('데이터를 불러오는데 실패했습니다.');
+            }
+            
+            const games = await response.json();
+            displayGames(games);
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('games-container').innerHTML = 
+                '<div class="no-data">경기 정보를 불러오는데 실패했습니다. 😢</div>';
+        }
+    }
+
+    function displayGames(games) {
+        const container = document.getElementById('games-container');
+        
+        if (!games || games.length === 0) {
+            container.innerHTML = '<div class="no-data">오늘 예정된 경기가 없습니다.</div>';
+            return;
+        }
+
+        container.innerHTML = games.map(game => {
+            const homeTeam = game.homeTeam;
+            const awayTeam = game.awayTeam;
+            const winnerId = game.predictedWinnerId;
+            
+            const homeWinner = winnerId && winnerId === homeTeam.id;
+            const awayWinner = winnerId && winnerId === awayTeam.id;
+
+            return `
+                <div class="game-container">
+                    <div class="matchup">
+                        <div class="team-box ${awayWinner ? 'winner' : ''}">
+                            <div class="team-name">${awayTeam.name}</div>
+                            <div class="team-stats">
+                                <div>OPS: ${awayTeam.ops ? awayTeam.ops.toFixed(3) : 'N/A'}</div>
+                                <div>ERA: ${awayTeam.era ? awayTeam.era.toFixed(2) : 'N/A'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="vs-divider">VS</div>
+                        
+                        <div class="team-box ${homeWinner ? 'winner' : ''}">
+                            <div class="team-name">${homeTeam.name}</div>
+                            <div class="team-stats">
+                                <div>OPS: ${homeTeam.ops ? homeTeam.ops.toFixed(3) : 'N/A'}</div>
+                                <div>ERA: ${homeTeam.era ? homeTeam.era.toFixed(2) : 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // 페이지 로드 시 데이터 가져오기
+    window.addEventListener('DOMContentLoaded', loadPredictions);
+</script>
 </body>
 </html>
