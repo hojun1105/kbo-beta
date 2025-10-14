@@ -131,7 +131,7 @@
     </div>
 
     <div class="back-container">
-        <a href="main.html" class="btn-back">← 돌아가기</a>
+        <a href="/" class="btn-back">← 돌아가기</a>
     </div>
 </div>
 
