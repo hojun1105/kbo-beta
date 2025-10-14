@@ -1,17 +1,25 @@
 package org.example.config;
 
+import lombok.RequiredArgsConstructor;
 import org.example.interceptor.AuthInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
 
-    public WebConfig(AuthInterceptor authInterceptor) {
-        this.authInterceptor = authInterceptor;
+    @Bean
+    public CharacterEncodingFilter characterEncodingFilter() {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        return filter;
     }
 
     @Override
@@ -19,10 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/",
-                        "/html/login.html",
                         "/login",
-                        "/html/signup.html",
                         "/signup",
                         "/images/**",
                         "/css/**",

@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate   # create, update, validate, none
+      ddl-auto: update   # create, update, validate, none
     show-sql: true
 
   mail:
@@ -26,3 +26,16 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true

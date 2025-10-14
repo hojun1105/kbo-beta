@@ -1,20 +1,25 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-    <title>KBO 선수 기록</title>
+    <meta charset="UTF-8">
+    <title>자료실 - KBO 팬 허브</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <jsp:include page="common/styles.jsp"/>
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f5f5f5;
-            padding: 40px;
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
         h2 {
-            color: #0a0a23;
+            color: #c30452;
             margin-bottom: 30px;
             text-align: center;
+            font-size: 2em;
         }
 
         #tabs {
@@ -55,6 +60,8 @@
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         table {
@@ -64,9 +71,9 @@
         }
 
         th, td {
-            padding: 15px 10px;
+            padding: 8px 6px;
             border: 1px solid #e0e0e0;
-            font-size: 14px;
+            font-size: 12px;
             text-align: center;
         }
 
@@ -75,11 +82,27 @@
             color: white;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            font-size: 11px;
+            padding: 6px 4px;
         }
 
         tr:hover {
             background-color: #f8f9fa;
+        }
+        
+        tr {
+            height: 32px;
+        }
+        
+        td {
+            vertical-align: middle;
+        }
+        
+        /* 숫자 데이터 가독성 향상 */
+        td:nth-child(n+3) {
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
         }
 
         /* KBO 팀별 색상 - 팀명 셀에만 적용 */
@@ -144,15 +167,19 @@
         }
     </style>
     <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-
 </head>
 <body>
 
-<h2>기록</h2>
-<div id="filters" class="filters" style="display:flex;align-items:flex-end;gap:16px;max-width:1200px;margin:0 auto 20px auto;flex-wrap:wrap;">
-    <div class="filter-group" style="display:flex;flex-direction:column;gap:6px;">
-        <label for="teamFilter" style="font-size:13px;color:#444;">팀</label>
-        <select id="teamFilter" style="padding:8px 10px;border:1px solid #cfd4dc;border-radius:8px;background:#fff;min-width:160px;font-size:14px;">
+<jsp:include page="common/header.jsp">
+    <jsp:param name="activePage" value="record"/>
+</jsp:include>
+
+<div class="content-wrapper">
+<h2>선수 기록</h2>
+<div id="filters" class="filters" style="display:flex;align-items:flex-end;gap:12px;max-width:1200px;margin:0 auto 15px auto;flex-wrap:wrap;">
+    <div class="filter-group" style="display:flex;flex-direction:column;gap:4px;">
+        <label for="teamFilter" style="font-size:12px;color:#444;">팀</label>
+        <select id="teamFilter" style="padding:6px 8px;border:1px solid #cfd4dc;border-radius:6px;background:#fff;min-width:140px;font-size:12px;">
             <option value="">전체</option>
             <option value="Doosan Bears">두산 베어스</option>
             <option value="LG Twins">LG 트윈스</option>
@@ -166,9 +193,9 @@
             <option value="KT Wiz">kt 위즈</option>
         </select>
     </div>
-    <div class="filter-group" id="positionFilterGroup" style="display:flex;flex-direction:column;gap:6px;">
-        <label for="positionFilter" style="font-size:13px;color:#444;">포지션</label>
-        <select id="positionFilter" style="padding:8px 10px;border:1px solid #cfd4dc;border-radius:8px;background:#fff;min-width:160px;font-size:14px;">
+    <div class="filter-group" id="positionFilterGroup" style="display:flex;flex-direction:column;gap:4px;">
+        <label for="positionFilter" style="font-size:12px;color:#444;">포지션</label>
+        <select id="positionFilter" style="padding:6px 8px;border:1px solid #cfd4dc;border-radius:6px;background:#fff;min-width:140px;font-size:12px;">
             <option value="">전체</option>
             <option value="포수">포수</option>
             <option value="내야수">내야수</option>
@@ -176,9 +203,9 @@
             <option value="지명타자">지명타자</option>
         </select>
     </div>
-    <div class="view-modes" style="display:flex;gap:8px;margin-left:auto;">
-        <button id="testFilter" class="test-btn" type="button" style="background:#e3f2fd;color:#1976d2;border:1px solid #bbdefb;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:12px;">테스트</button>
-        <button id="resetFilters" class="reset-btn" type="button" style="background:#f1f3f5;color:#0a0a23;border:1px solid #cfd4dc;padding:8px 14px;border-radius:8px;cursor:pointer;">초기화</button>
+    <div class="view-modes" style="display:flex;gap:6px;margin-left:auto;">
+        <button id="testFilter" class="test-btn" type="button" style="background:#e3f2fd;color:#1976d2;border:1px solid #bbdefb;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;">테스트</button>
+        <button id="resetFilters" class="reset-btn" type="button" style="background:#f1f3f5;color:#0a0a23;border:1px solid #cfd4dc;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;">초기화</button>
     </div>
     <hr style="margin-top:20px; border:none; border-top:1px solid #e5e5e5; width:100%"/>
     </div>
@@ -266,7 +293,9 @@
         </script>
     </table>
 </div>
-</body>
+</div>
+
+<jsp:include page="common/footer.jsp"/>
 
 <script>
     function showTab(tabId) {

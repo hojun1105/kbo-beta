@@ -17,9 +17,7 @@ public class EmailVerificationController {
     private final VerificationService verificationService;
     private final Map<String, String> codeStore = new HashMap<>();
 
-
-    public EmailVerificationController(EmailService emailService,
-                                       VerificationService verificationService) {
+    public EmailVerificationController(EmailService emailService, VerificationService verificationService) {
         this.emailService = emailService;
         this.verificationService = verificationService;
     }
@@ -33,14 +31,14 @@ public class EmailVerificationController {
         return "인증 코드 전송 완료";
     }
 
-    @PostMapping(value = "/verifyCode", produces = "text/plain; charset=UTF-8")
+    @PostMapping(value = "/verifyCode", produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public ResponseEntity<String> verifyCode(@RequestParam("email") String email, @RequestParam("code") String code) {
         String storedCode = codeStore.get(email);
-        if(storedCode !=null && storedCode.equals(code)) {
+        if (storedCode != null && storedCode.equals(code)) {
             return ResponseEntity.ok("인증성공!");
-        }
-        else{
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패 ❌");
-        }}
+        }
+    }
 }

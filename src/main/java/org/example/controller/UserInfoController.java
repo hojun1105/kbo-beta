@@ -11,6 +11,7 @@ import org.example.service.UserService;
 
 @Controller
 public class UserInfoController {
+    
     private final UserService userService;
 
     public UserInfoController(UserService userService) {
@@ -21,7 +22,7 @@ public class UserInfoController {
     public String getUserInfo(HttpServletRequest request, Model model) {
         String userId = (String) request.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/html/login.html";
+            return "redirect:/login";
         }
 
         User user = userService.getUserById(userId);
@@ -30,33 +31,40 @@ public class UserInfoController {
             return "errorPage";
         }
 
+        model.addAttribute("userId", userId);
+        model.addAttribute("isLoggedIn", true);
         model.addAttribute("user", user);
         return "myinfo";
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(User userForm, HttpServletRequest request) {
+    public String updateUser(User userForm, HttpServletRequest request, Model model) {
         String userId = (String) request.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/html/login.html";
+            return "redirect:/login";
         }
 
         userService.updateUserInfo(userId, userForm);
+        
+        User user = userService.getUserById(userId);
+        model.addAttribute("userId", userId);
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("user", user);
         return "myinfo";
     }
 
     @GetMapping("/deleteUser")
     public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
         String userId = (String) request.getAttribute("userId");
-
         if (userId == null) {
-            return "redirect:/html/login.html";
+            return "redirect:/login";
         }
         
         userService.deleteUserById(userId);
         
-        // 쿠키 삭제
-        response.addCookie(new jakarta.servlet.http.Cookie("token", ""));
+        jakarta.servlet.http.Cookie tokenCookie = new jakarta.servlet.http.Cookie("token", "");
+        tokenCookie.setMaxAge(0);
+        response.addCookie(tokenCookie);
         
         return "redirect:/";
     }

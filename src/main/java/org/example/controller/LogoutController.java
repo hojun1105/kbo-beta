@@ -10,7 +10,6 @@ public class LogoutController {
 
     @GetMapping("/logout")
     public String logout(HttpServletResponse response) {
-        // 쿠키 삭제
         Cookie tokenCookie = new Cookie("token", "");
         tokenCookie.setHttpOnly(true);
         tokenCookie.setPath("/");

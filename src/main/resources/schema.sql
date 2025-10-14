@@ -93,3 +93,18 @@ CREATE TABLE users (
                        email VARCHAR(255) NOT NULL,
                        instagram_id VARCHAR(255)
 );
+
+CREATE TABLE game_highlights (
+                                id BIGSERIAL PRIMARY KEY,
+                                game_date DATE NOT NULL,
+                                home_team VARCHAR(50) NOT NULL,
+                                away_team VARCHAR(50) NOT NULL,
+                                youtube_url VARCHAR(500) NOT NULL,
+                                title VARCHAR(200),
+                                description VARCHAR(1000),
+                                thumbnail_url VARCHAR(500),
+                                duration VARCHAR(20),
+                                view_count BIGINT,
+                                created_at TIMESTAMP,
+                                updated_at TIMESTAMP
+);

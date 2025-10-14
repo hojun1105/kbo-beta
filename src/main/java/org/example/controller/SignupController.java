@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.example.service.UserService;
@@ -11,14 +10,13 @@ public class SignupController {
 
     private final UserService userService;
 
-    @Autowired
     public SignupController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/signup")
     public String showSignupForm() {
-        return "signup"; // → /WEB-INF/views/signup.jsp
+        return "signup";
     }
 
     @PostMapping("/signup")
@@ -26,15 +24,13 @@ public class SignupController {
                          @RequestParam("userId") String userId,
                          @RequestParam("password") String password,
                          @RequestParam("email") String email) {
-
-        User user = new User(userId, nickname, password, email,null);
+        User user = new User(userId, nickname, password, email, null);
         boolean success = userService.register(user);
 
         if (success) {
-            return "redirect:/html/login.html";
+            return "redirect:/login";
         } else {
-            return "redirect:/html/signup.html?error=1"; // 실패 시 메시지 전달
+            return "redirect:/signup?error=1";
         }
     }
-
 }
