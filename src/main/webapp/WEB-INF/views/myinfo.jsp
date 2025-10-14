@@ -7,13 +7,8 @@
     <meta charset="UTF-8">
     <title>마이페이지 - KBO 팬 허브</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <jsp:include page="common/styles.jsp"/>
     <style>
-        body {
-            margin: 0;
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #0a0a23;
-            color: #222;
-        }
 
         .container {
             max-width: 480px;
@@ -100,12 +95,12 @@
     </style>
 </head>
 <body>
+
+<jsp:include page="common/header.jsp"/>
+
 <div class="container">
     <div class="login-header">
         <h2>마이페이지</h2>
-        <a href="/">
-            <img src="/images/kbo.png" alt="KBO 로고" class="login-logo">
-        </a>
     </div>
 
     <form id="userForm" action="/updateUser" method="post">
@@ -162,5 +157,8 @@
         }
     }
 </script>
+
+<jsp:include page="common/footer.jsp"/>
+
 </body>
 </html>

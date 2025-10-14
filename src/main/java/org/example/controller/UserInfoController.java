@@ -1,6 +1,7 @@
 package org.example.controller;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.example.service.UserService;
 
 @Controller
 public class UserInfoController {
+    
     private final UserService userService;
 
     public UserInfoController(UserService userService) {
@@ -17,10 +19,10 @@ public class UserInfoController {
     }
 
     @GetMapping("/userInfo")
-    public String getUserInfo(HttpSession session,Model model) {
-        String userId = (String) session.getAttribute("userId");
+    public String getUserInfo(HttpServletRequest request, Model model) {
+        String userId = (String) request.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/html/login.html";
+            return "redirect:/login";
         }
 
         User user = userService.getUserById(userId);
@@ -29,31 +31,41 @@ public class UserInfoController {
             return "errorPage";
         }
 
+        model.addAttribute("userId", userId);
+        model.addAttribute("isLoggedIn", true);
         model.addAttribute("user", user);
         return "myinfo";
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(User userForm, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+    public String updateUser(User userForm, HttpServletRequest request, Model model) {
+        String userId = (String) request.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/html/login.html";
+            return "redirect:/login";
         }
 
         userService.updateUserInfo(userId, userForm);
+        
+        User user = userService.getUserById(userId);
+        model.addAttribute("userId", userId);
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("user", user);
         return "myinfo";
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser(HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
-
+    public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
+        String userId = (String) request.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/html/login.html";
+            return "redirect:/login";
         }
+        
         userService.deleteUserById(userId);
-        session.invalidate();
-
-        return "main";
+        
+        jakarta.servlet.http.Cookie tokenCookie = new jakarta.servlet.http.Cookie("token", "");
+        tokenCookie.setMaxAge(0);
+        response.addCookie(tokenCookie);
+        
+        return "redirect:/";
     }
 }
