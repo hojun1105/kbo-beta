@@ -7,6 +7,11 @@
         color: #222;
     }
     
+    /* Ensure form controls inherit the page font */
+    input, textarea, button, select {
+        font-family: inherit;
+    }
+    
     .logo-img {
         height: 60px;
         vertical-align: middle;
