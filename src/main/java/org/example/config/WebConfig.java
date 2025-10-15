@@ -35,4 +35,6 @@ public class WebConfig implements WebMvcConfigurer {
                         "/error"
                 );
     }
+
+    // removed uploads resource handler
 }

@@ -9,7 +9,7 @@
             <a href="<c:url value="/predict"/>" class="nav-link ${param.activePage == 'predict' ? 'active' : ''}">오늘의 경기</a>
             <c:if test="${isLoggedIn}">
                 <a href="<c:url value="/record"/>" class="nav-link ${param.activePage == 'record' ? 'active' : ''}">자료실</a>
-                <a href="#" class="nav-link">커뮤니티</a>
+                <a href="<c:url value="/community"/>" class="nav-link ${param.activePage == 'community' ? 'active' : ''}">커뮤니티</a>
                 <a href="<c:url value="/highlights"/>" class="nav-link ${param.activePage == 'highlights' ? 'active' : ''}">하이라이트</a>
             </c:if>
         </div>

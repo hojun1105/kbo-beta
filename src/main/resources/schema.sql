@@ -111,3 +111,33 @@ CREATE TABLE game_predictions(
             today_game_id BIGINT REFERENCES today_games(id),
             predicted_winner INT REFERENCES team_info(id)
 )
+
+CREATE TABLE IF NOT EXISTS community_posts (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    content VARCHAR(5000) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    -- images column removed (reverted)
+    view_count INTEGER DEFAULT 0,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- Comments for community posts
+CREATE TABLE IF NOT EXISTS community_comments (
+    id BIGSERIAL PRIMARY KEY,
+    post_id BIGINT NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+    username VARCHAR(100) NOT NULL,
+    content VARCHAR(2000) NOT NULL,
+    created_at TIMESTAMP
+);
+
+-- Votes for posts (unique per user per post)
+CREATE TABLE IF NOT EXISTS community_post_votes (
+    id BIGSERIAL PRIMARY KEY,
+    post_id BIGINT NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+    username VARCHAR(100) NOT NULL,
+    vote INTEGER NOT NULL,
+    created_at TIMESTAMP,
+    CONSTRAINT uq_post_vote UNIQUE (post_id, username)
+);
