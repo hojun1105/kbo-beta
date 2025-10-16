@@ -27,6 +27,39 @@
         .table thead th { background: #f7f7f7; }
         .table tbody tr:hover { background: #f3f3f3; }
         .placeholder { color: #777; margin-top: 12px; }
+        .pagination-container { margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .pagination-btn { 
+            display: inline-block; 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            text-decoration: none; 
+            border: 1px solid #ddd; 
+            color: #333; 
+            background: #fff; 
+            font-size: 13px;
+            transition: all 0.2s ease; 
+            width: auto;
+        }
+        .pagination-btn:hover { 
+            background: #c30452; 
+            color: #fff; 
+            border-color: #c30452;
+        }
+        .pagination-btn.disabled { 
+            background: #f5f5f5; 
+            color: #999; 
+            border-color: #ddd; 
+            cursor: not-allowed;
+        }
+        .page-info { 
+            padding: 6px 12px; 
+            background: #f8f8f8; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 13px; 
+            color: #333; 
+            font-weight: normal;
+        }
     </style>
     
 </head>
@@ -72,12 +105,35 @@
                 </tbody>
             </table>
 
-            <div class="pagination" style="margin-top: 16px; display:flex; gap: 8px;">
+            <div class="pagination-container">
                 <c:set var="prevPage" value="${currentPage - 1}"/>
                 <c:set var="nextPage" value="${currentPage + 1}"/>
-                <a class="btn" href="<c:url value='/community?page=${prevPage < 0 ? 0 : prevPage}&size=${pageSize}'/>">이전</a>
-                <span>페이지 ${currentPage + 1} / ${postPage.totalPages}</span>
-                <a class="btn" href="<c:url value='/community?page=${nextPage >= postPage.totalPages ? postPage.totalPages - 1 : nextPage}&size=${pageSize}'/>">다음</a>
+                
+                <c:choose>
+                    <c:when test="${currentPage > 0}">
+                        <a class="pagination-btn" href="<c:url value='/community?page=${prevPage}&size=${pageSize}'/>">
+                            ← 이전
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="pagination-btn disabled">← 이전</span>
+                    </c:otherwise>
+                </c:choose>
+                
+                <div class="page-info">
+                    ${currentPage + 1} / ${postPage.totalPages}
+                </div>
+                
+                <c:choose>
+                    <c:when test="${currentPage < postPage.totalPages - 1}">
+                        <a class="pagination-btn" href="<c:url value='/community?page=${nextPage}&size=${pageSize}'/>">
+                            다음 →
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="pagination-btn disabled">다음 →</span>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </c:when>
         <c:otherwise>
