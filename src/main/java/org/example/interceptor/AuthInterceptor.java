@@ -29,21 +29,30 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        // Protected 경로는 로그인 필요
         if (token != null && jwtService.validateToken(token)) {
             return true;
-        } else {
-            response.sendRedirect("/login");
+        }
+
+        if (requestURI.startsWith("/api/")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"로그인이 필요합니다.\"}");
             return false;
         }
+
+        response.sendRedirect("/login");
+        return false;
     }
 
     private boolean isPublicPath(String requestURI) {
         return requestURI.equals("/") ||
                requestURI.equals("/predict") ||
+               requestURI.equals("/ticketing") ||
+               requestURI.equals("/restaurants") ||
                requestURI.startsWith("/images/") ||
                requestURI.startsWith("/css/") ||
-               requestURI.startsWith("/js/");
+               requestURI.startsWith("/js/") ||
+               requestURI.startsWith("/api/ticketing/games");
     }
 
     private String extractToken(HttpServletRequest request) {
