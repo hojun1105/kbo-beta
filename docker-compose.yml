@@ -9,6 +9,6 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: kbohub
     ports:
-      - "5436:5432"
+      - "5433:5432"
     volumes:
       - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro

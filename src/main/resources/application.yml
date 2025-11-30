@@ -2,7 +2,7 @@ server:
   port: 8081
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5436/kbohub
+    url: jdbc:postgresql://localhost:5433/kbohub
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
@@ -32,9 +32,3 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true

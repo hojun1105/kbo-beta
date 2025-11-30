@@ -141,3 +141,65 @@ CREATE TABLE IF NOT EXISTS community_post_votes (
     created_at TIMESTAMP,
     CONSTRAINT uq_post_vote UNIQUE (post_id, username)
 );
+
+CREATE TABLE IF NOT EXISTS ticket_games (
+    id BIGSERIAL PRIMARY KEY,
+    home_team VARCHAR(255) NOT NULL,
+    away_team VARCHAR(255) NOT NULL,
+    game_date TIMESTAMP NOT NULL,
+    stadium VARCHAR(255) NOT NULL,
+    stadium_address VARCHAR(500),
+    status VARCHAR(50) NOT NULL DEFAULT 'SCHEDULED',
+    home_score INTEGER,
+    away_score INTEGER,
+    weather VARCHAR(255),
+    temperature VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ticket_reservations (
+    id BIGSERIAL PRIMARY KEY,
+    owner_id VARCHAR(255) NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    game_id BIGINT NOT NULL REFERENCES ticket_games(id) ON DELETE CASCADE,
+    seat_section VARCHAR(100) NOT NULL,
+    seat_row VARCHAR(100) NOT NULL,
+    seat_number VARCHAR(100) NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'RESERVED',
+    description VARCHAR(1000),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_ticket_reservations_owner ON ticket_reservations(owner_id);
+CREATE INDEX IF NOT EXISTS idx_ticket_reservations_game ON ticket_reservations(game_id);
+
+INSERT INTO ticket_games (home_team, away_team, game_date, stadium, stadium_address, status, weather, temperature)
+SELECT 'LG 트윈스', '두산 베어스', CURRENT_TIMESTAMP + INTERVAL '7 days', '잠실야구장', '서울특별시 송파구 올림픽로 25', 'SCHEDULED', '맑음', '22°C'
+WHERE NOT EXISTS (SELECT 1 FROM ticket_games WHERE home_team = 'LG 트윈스' AND away_team = '두산 베어스');
+
+INSERT INTO ticket_games (home_team, away_team, game_date, stadium, stadium_address, status, weather, temperature)
+SELECT '한화 이글스', 'KIA 타이거즈', CURRENT_TIMESTAMP + INTERVAL '9 days', '대전 한화생명 이글스파크', '대전광역시 중구 대종로 373', 'SCHEDULED', '구름', '20°C'
+WHERE NOT EXISTS (SELECT 1 FROM ticket_games WHERE home_team = '한화 이글스' AND away_team = 'KIA 타이거즈');
+
+INSERT INTO ticket_games (home_team, away_team, game_date, stadium, stadium_address, status, weather, temperature)
+SELECT '롯데 자이언츠', 'SSG 랜더스', CURRENT_TIMESTAMP + INTERVAL '11 days', '사직야구장', '부산광역시 동래구 사직로 45', 'SCHEDULED', '맑음', '23°C'
+WHERE NOT EXISTS (SELECT 1 FROM ticket_games WHERE home_team = '롯데 자이언츠' AND away_team = 'SSG 랜더스');
+
+-- stores 테이블 생성
+CREATE TABLE IF NOT EXISTS stores (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(100),
+    visitor_reviews VARCHAR(50),
+    blog_reviews VARCHAR(50),
+    operating_hours TEXT,
+    address VARCHAR(255),
+    phone_num VARCHAR(50),
+    search_keyword VARCHAR(255),
+    location VARCHAR(255),
+    naver_place_id VARCHAR(50),
+    latitude DOUBLE PRECISION,
+    longitude DOUBLE PRECISION,
+    CONSTRAINT stores_naver_place_id_key UNIQUE (naver_place_id)
+    );
