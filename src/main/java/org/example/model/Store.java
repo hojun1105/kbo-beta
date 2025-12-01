@@ -57,3 +57,5 @@ public class Store {
     private Double longitude;
 }
 
+
+

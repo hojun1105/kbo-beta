@@ -9,7 +9,7 @@
     <jsp:include page="common/styles.jsp"/>
     <style>
         .restaurants-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -58,88 +58,17 @@
             border-color: #1e3c72;
         }
 
-        .restaurant-card {
-            border: 1px solid #f1f3f5;
+        .map-container {
+            margin-top: 20px;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-            background: #fbfcfd;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .restaurant-card:hover {
-            transform: translateY(-2px);
+            overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            height: 600px;
         }
 
-        .restaurant-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .restaurant-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e3c72;
-            margin: 0;
-        }
-
-        .store-reviews {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .restaurant-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .restaurant-meta span {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .restaurant-description {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-top: 10px;
-        }
-
-        .restaurant-actions {
-            margin-top: 14px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-map {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-        }
-
-        .btn-map:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(30, 60, 114, 0.3);
+        #naverMap {
+            width: 100%;
+            height: 100%;
         }
 
         .empty-state {
@@ -147,56 +76,56 @@
             padding: 48px 0;
             color: #7b8a99;
             font-size: 16px;
-        }
-
-        .map-container {
-            margin-top: 30px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        #naverMap {
-            width: 100%;
-            height: 400px;
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 400px;
-            background: #f1f3f5;
+            height: 600px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #868e96;
+        }
+
+        .info-window {
+            padding: 10px;
+            min-width: 200px;
+        }
+
+        .info-window h4 {
+            margin: 0 0 8px 0;
+            color: #1e3c72;
             font-size: 16px;
-            border-radius: 12px;
+        }
+
+        .info-window p {
+            margin: 4px 0;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .info-window a {
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .info-window a:hover {
+            text-decoration: underline;
         }
     </style>
     <script>
         const contextPath = '${pageContext.request.contextPath}';
-        const stores = [
-            <c:forEach var="store" items="${stores}" varStatus="status">
-            {
-                id: ${store.id},
-                name: "<c:out value='${store.name}'/>",
-                location: "<c:out value='${store.location}'/>",
-                address: "<c:out value='${store.address}'/>",
-                latitude: ${store.latitude != null ? store.latitude : 'null'},
-                longitude: ${store.longitude != null ? store.longitude : 'null'},
-                category: "<c:out value='${store.category}'/>",
-                phoneNum: "<c:out value='${store.phoneNum}'/>",
-                operatingHours: "<c:out value='${store.operatingHours}'/>",
-                visitorReviews: "<c:out value='${store.visitorReviews}'/>",
-                blogReviews: "<c:out value='${store.blogReviews}'/>",
-                naverPlaceId: "<c:out value='${store.naverPlaceId}'/>"
-            }<c:if test="${!status.last}">,</c:if>
-            </c:forEach>
-        ];
+        const stores = ${storesJson};
         const selectedLocation = "<c:out value='${selectedLocation}'/>";
+        
+        // 디버깅용
+        console.log('전체 stores 배열:', stores);
+        console.log('stores 개수:', stores ? stores.length : 0);
+        if (stores && stores.length > 0) {
+            console.log('첫 번째 store:', stores[0]);
+        }
     </script>
-    <!-- 네이버 지도 API 스크립트 (향후 사용) -->
-    <!-- <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_CLIENT_ID"></script> -->
+    <!-- 네이버 지도 API 스크립트 -->
+    <c:if test="${not empty naverMapClientId}">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${naverMapClientId}"
+                onload="window.naverMapLoaded = true; if (window.initMapReady) initMap();" 
+                onerror="console.error('네이버 지도 API 스크립트 로드 실패')"></script>
+    </c:if>
 </head>
 <body>
 <jsp:include page="common/header.jsp">
@@ -221,68 +150,16 @@
             </form>
         </div>
 
-        <div id="storeList">
+        <!-- 네이버 지도 컨테이너 -->
+        <div class="map-container">
             <c:choose>
                 <c:when test="${empty stores}">
                     <div class="empty-state">해당 경기장 주변의 등록된 음식점이 없습니다.</div>
                 </c:when>
                 <c:otherwise>
-                    <c:forEach var="store" items="${stores}">
-                        <div class="restaurant-card">
-                            <div class="restaurant-header">
-                                <h3 class="restaurant-name">
-                                    <c:out value="${store.name}"/>
-                                    <c:if test="${not empty store.category}">
-                                        <span style="font-size: 14px; color: #868e96; font-weight: 400; margin-left: 8px;">
-                                            (<c:out value="${store.category}"/>)
-                                        </span>
-                                    </c:if>
-                                </h3>
-                                <c:if test="${not empty store.visitorReviews || not empty store.blogReviews}">
-                                    <div class="store-reviews">
-                                        <c:if test="${not empty store.visitorReviews}">
-                                            <span>👥 방문자 리뷰: <c:out value="${store.visitorReviews}"/></span>
-                                        </c:if>
-                                        <c:if test="${not empty store.blogReviews}">
-                                            <span>📝 블로그 리뷰: <c:out value="${store.blogReviews}"/></span>
-                                        </c:if>
-                                    </div>
-                                </c:if>
-                            </div>
-                            <div class="restaurant-meta">
-                                <c:if test="${not empty store.address}">
-                                    <span>📍 <c:out value="${store.address}"/></span>
-                                </c:if>
-                                <c:if test="${not empty store.phoneNum}">
-                                    <span>📞 <c:out value="${store.phoneNum}"/></span>
-                                </c:if>
-                                <c:if test="${not empty store.operatingHours}">
-                                    <span>🕐 <c:out value="${store.operatingHours}"/></span>
-                                </c:if>
-                            </div>
-                            <div class="restaurant-actions">
-                                <c:if test="${store.latitude != null && store.longitude != null}">
-                                    <button class="btn btn-map" onclick="showOnMap(${store.latitude}, ${store.longitude}, '<c:out value="${store.name}"/>')">
-                                        지도에서 보기
-                                    </button>
-                                </c:if>
-                                <c:if test="${not empty store.naverPlaceId}">
-                                    <button class="btn btn-map" onclick="openNaverPlace('${store.naverPlaceId}')">
-                                        네이버 플레이스
-                                    </button>
-                                </c:if>
-                            </div>
-                        </div>
-                    </c:forEach>
+                    <div id="naverMap"></div>
                 </c:otherwise>
             </c:choose>
-        </div>
-
-        <!-- 네이버 지도 컨테이너 (향후 활성화) -->
-        <div class="map-container" id="mapContainer" style="display: none;">
-            <div id="naverMap" class="map-placeholder">
-                네이버 지도 API 연동 준비 중입니다.
-            </div>
         </div>
     </div>
 </div>
@@ -290,51 +167,188 @@
 <jsp:include page="common/footer.jsp"/>
 
 <script>
-    // changeLocation 함수는 더 이상 필요 없음 (form submit 사용)
-
-    function showOnMap(latitude, longitude, name) {
-        // 향후 네이버 지도 API 연동 시 사용
-        alert('지도 기능은 네이버 지도 API 연동 후 사용 가능합니다.\n위치: ' + name + '\n위도: ' + latitude + ', 경도: ' + longitude);
+    // 네이버 지도 초기화
+    function initMap() {
+        console.log('=== initMap 호출됨 ===');
+        console.log('stores 배열:', stores);
+        console.log('stores 개수:', stores ? stores.length : 0);
         
-        // 네이버 지도 API 연동 예시 코드 (주석 처리)
-        /*
-        if (typeof naver !== 'undefined' && naver.maps) {
-            const mapContainer = document.getElementById('mapContainer');
-            mapContainer.style.display = 'block';
+        const mapElement = document.getElementById('naverMap');
+        if (!mapElement) {
+            console.error('naverMap 요소를 찾을 수 없습니다.');
+            return;
+        }
+
+        if (typeof naver === 'undefined' || !naver.maps) {
+            console.error('네이버 지도 API를 불러올 수 없습니다. Client ID를 확인해주세요.');
+            console.log('naver 객체:', typeof naver);
+            mapElement.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#868e96;flex-direction:column;"><p>네이버 지도 API를 불러올 수 없습니다.</p><p style="font-size:14px;margin-top:8px;">Client ID를 확인해주세요.</p></div>';
+            return;
+        }
+
+        console.log('네이버 지도 API 로드 완료');
+
+        // stores가 없거나 비어있는 경우
+        if (!stores || stores.length === 0) {
+            console.warn('stores 데이터가 없습니다.');
+            mapElement.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#868e96;flex-direction:column;"><p>표시할 음식점이 없습니다.</p><p style="font-size:14px;margin-top:8px;">해당 경기장에 등록된 음식점이 없습니다.</p></div>';
+            return;
+        }
+
+        // 좌표가 있는 stores만 필터링
+        const validStores = stores.filter(store => {
+            const hasCoords = store.latitude != null && store.longitude != null;
+            if (!hasCoords) {
+                console.log('좌표 없는 store:', store.name, 'latitude:', store.latitude, 'longitude:', store.longitude);
+            }
+            return hasCoords;
+        });
+        console.log('유효한 stores 개수:', validStores.length);
+        console.log('유효한 stores:', validStores);
+        
+        if (validStores.length === 0) {
+            console.warn('좌표가 있는 음식점이 없습니다.');
+            mapElement.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#868e96;flex-direction:column;"><p>표시할 음식점이 없습니다.</p><p style="font-size:14px;margin-top:8px;">좌표 정보가 있는 음식점이 없습니다.</p></div>';
+            return;
+        }
+
+        try {
+            // 첫 번째 store의 위치를 중심으로 설정
+            const firstStore = validStores[0];
+            console.log('첫 번째 store:', firstStore);
             
             const mapOptions = {
-                center: new naver.maps.LatLng(latitude, longitude),
-                zoom: 15
+                center: new naver.maps.LatLng(firstStore.latitude, firstStore.longitude),
+                zoom: 14
             };
-            
+
             const map = new naver.maps.Map('naverMap', mapOptions);
+            console.log('지도 생성 완료');
+
+        // 모든 stores에 마커 추가
+        const markers = [];
+        const infoWindows = [];
+
+        validStores.forEach(function(store) {
+            const position = new naver.maps.LatLng(store.latitude, store.longitude);
             
+            // 마커 생성
             const marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(latitude, longitude),
+                position: position,
                 map: map,
-                title: name
+                title: store.name
             });
-            
+
+            // 정보창 내용 생성
+            let infoContent = '<div class="info-window">';
+            infoContent += '<h4>' + escapeHtml(store.name) + '</h4>';
+            if (store.category) {
+                infoContent += '<p><strong>카테고리:</strong> ' + escapeHtml(store.category) + '</p>';
+            }
+            if (store.address) {
+                infoContent += '<p><strong>주소:</strong> ' + escapeHtml(store.address) + '</p>';
+            }
+            if (store.phoneNum) {
+                infoContent += '<p><strong>전화:</strong> ' + escapeHtml(store.phoneNum) + '</p>';
+            }
+            if (store.operatingHours) {
+                const hoursId = 'hours-' + store.id;
+                infoContent += '<div style="margin: 6px 0;">';
+                infoContent += '<strong style="cursor: pointer; font-size: 12px; color: #1e3c72; user-select: none;" onclick="toggleHours(\'' + hoursId + '\', this)">영업시간 ▼</strong>';
+                infoContent += '<div id="' + hoursId + '" style="display: none; font-size: 11px; color: #666; margin-top: 4px; padding: 6px; background: #f5f5f5; border-radius: 4px; line-height: 1.4; white-space: pre-line;">';
+                infoContent += escapeHtml(store.operatingHours);
+                infoContent += '</div></div>';
+            }
+            if (store.visitorReviews || store.blogReviews) {
+                infoContent += '<p>';
+                if (store.visitorReviews) {
+                    infoContent += '👥 ' + escapeHtml(store.visitorReviews);
+                }
+                if (store.blogReviews) {
+                    if (store.visitorReviews) infoContent += ' | ';
+                    infoContent += '📝 ' + escapeHtml(store.blogReviews);
+                }
+                infoContent += '</p>';
+            }
+            if (store.naverPlaceId) {
+                infoContent += '<p><a href="https://place.naver.com/place/' + store.naverPlaceId + '" target="_blank">네이버 플레이스 보기 →</a></p>';
+            }
+            infoContent += '</div>';
+
             const infoWindow = new naver.maps.InfoWindow({
-                content: '<div style="padding: 10px;"><strong>' + name + '</strong></div>'
+                content: infoContent
             });
-            
+
+            markers.push(marker);
+            infoWindows.push(infoWindow);
+
+            // 마커 클릭 시 정보창 표시
             naver.maps.Event.addListener(marker, 'click', function() {
+                // 다른 정보창 닫기
+                infoWindows.forEach(function(iw) {
+                    iw.close();
+                });
                 infoWindow.open(map, marker);
             });
+        });
+
+        // 모든 마커가 보이도록 지도 범위 조정
+        if (validStores.length > 1) {
+            const bounds = new naver.maps.LatLngBounds();
+            validStores.forEach(function(store) {
+                bounds.extend(new naver.maps.LatLng(store.latitude, store.longitude));
+            });
+            map.fitBounds(bounds);
+            }
+            
+            console.log('마커 개수:', markers.length);
+        } catch (error) {
+            console.error('지도 초기화 중 오류 발생:', error);
+            mapElement.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#868e96;flex-direction:column;"><p>지도 초기화 중 오류가 발생했습니다.</p><p style="font-size:14px;margin-top:8px;">' + error.message + '</p></div>';
         }
-        */
     }
 
-    function openNaverPlace(placeId) {
-        if (placeId) {
-            // 네이버 플레이스 URL 형식 (실제 형식은 네이버 API 문서 참조)
-            window.open('https://place.naver.com/place/' + placeId, '_blank');
-        } else {
-            alert('네이버 플레이스 ID가 없습니다.');
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function toggleHours(id, element) {
+        const el = document.getElementById(id);
+        if (el) {
+            const isHidden = el.style.display === 'none';
+            el.style.display = isHidden ? 'block' : 'none';
+            if (element) {
+                element.innerHTML = '영업시간 ' + (isHidden ? '▲' : '▼');
+            }
         }
     }
+
+    // 스크립트 로드 확인 후 초기화
+    function waitForNaverMap() {
+        if (typeof naver !== 'undefined' && naver.maps) {
+            initMap();
+        } else if (window.naverMapLoaded) {
+            // 스크립트는 로드되었지만 naver 객체가 아직 준비되지 않음
+            setTimeout(waitForNaverMap, 100);
+        } else {
+            // 스크립트가 아직 로드되지 않음
+            setTimeout(waitForNaverMap, 100);
+        }
+    }
+
+    // 페이지 로드 시 지도 초기화
+    window.addEventListener('load', function() {
+        window.initMapReady = true;
+        if (window.naverMapLoaded) {
+            waitForNaverMap();
+        } else {
+            // 스크립트가 로드되지 않았으면 대기
+            waitForNaverMap();
+        }
+    });
 </script>
 </body>
 </html>
-

@@ -44,3 +44,8 @@ bin/
 .idea/
 .idea/gradle.xml
 *.iml
+
+### Environment Variables ###
+.env
+.env.local
+.env.*.local

@@ -32,3 +32,8 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+
+# 네이버 지도 API 설정
+naver:
+  map:
+    client-id: ${NAVER_MAP_CLIENT_ID:}

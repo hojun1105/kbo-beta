@@ -43,12 +43,13 @@ dependencies {
   implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
   runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
   runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+  // .env file
+  implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
   // Lombok
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   runtimeOnly 'org.postgresql:postgresql:42.7.3'
-
   // Test
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
