@@ -85,6 +85,10 @@
             letter-spacing: 0.3px;
             font-size: 11px;
             padding: 6px 4px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
         }
 
         tr:hover {
