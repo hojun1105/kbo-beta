@@ -70,11 +70,15 @@
         .video-container {
             position: relative;
             width: 100%;
-            height: 225px;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 = 0.5625) */
             background: #000;
+            overflow: hidden;
         }
         
         .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             border: none;

@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>KBO 팬 허브 - 오늘의 트윈스</title>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/kbo.png">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <jsp:include page="common/styles.jsp"/>
     <style>

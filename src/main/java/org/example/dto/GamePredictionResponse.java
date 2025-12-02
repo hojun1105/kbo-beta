@@ -24,6 +24,7 @@ public class GamePredictionResponse {
     public static class TeamData {
         private Integer id;
         private String name;
+        private String logo;
         private BigDecimal ops;
         private BigDecimal era;
     }

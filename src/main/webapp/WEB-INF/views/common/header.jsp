@@ -12,7 +12,7 @@
                 <a href="<c:url value="/community"/>" class="nav-link ${param.activePage == 'community' ? 'active' : ''}">커뮤니티</a>
                 <a href="<c:url value="/highlights"/>" class="nav-link ${param.activePage == 'highlights' ? 'active' : ''}">하이라이트</a>
                 <a href="<c:url value="/ticketing"/>" class="nav-link ${param.activePage == 'ticketing' ? 'active' : ''}">티켓팅</a>
-                <a href="<c:url value="/restaurants"/>" class="nav-link ${param.activePage == 'restaurants' ? 'active' : ''}">경기장 주변 음식점</a>
+                <a href="<c:url value="/restaurants"/>" class="nav-link ${param.activePage == 'restaurants' ? 'active' : ''}">Eats</a>
             </c:if>
         </div>
     </div>

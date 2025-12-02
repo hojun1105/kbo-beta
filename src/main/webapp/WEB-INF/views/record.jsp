@@ -99,10 +99,10 @@
             vertical-align: middle;
         }
         
-        /* 숫자 데이터 가독성 향상 */
+        /* 숫자 데이터 스타일 */
         td:nth-child(n+3) {
-            font-family: 'Courier New', monospace;
-            font-weight: 500;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 400;
         }
 
         /* KBO 팀별 색상 - 팀명 셀에만 적용 */
@@ -204,7 +204,6 @@
         </select>
     </div>
     <div class="view-modes" style="display:flex;gap:6px;margin-left:auto;">
-        <button id="testFilter" class="test-btn" type="button" style="background:#e3f2fd;color:#1976d2;border:1px solid #bbdefb;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;">테스트</button>
         <button id="resetFilters" class="reset-btn" type="button" style="background:#f1f3f5;color:#0a0a23;border:1px solid #cfd4dc;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;">초기화</button>
     </div>
     <hr style="margin-top:20px; border:none; border-top:1px solid #e5e5e5; width:100%"/>

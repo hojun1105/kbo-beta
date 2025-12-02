@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>오늘의 트윈스 - 승부 예측</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/kbo.png">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <jsp:include page="common/styles.jsp"/>
     <style>
@@ -13,11 +14,10 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #f5f5f5;
             color: #222;
-            padding: 30px 15px;
         }
         .container {
             max-width: 900px;
-            margin: auto;
+            margin: 40px auto;
             background: rgba(255,255,255,0.95);
             padding: 40px;
             border-radius: 16px;
@@ -74,6 +74,35 @@
             font-weight: bold;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
+        .team-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            object-fit: contain;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .team-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .team-logo-placeholder {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+            color: #999;
+            font-size: 0.8em;
+            text-align: center;
+        }
         .team-name {
             font-weight: bold;
             font-size: 1.5em;
@@ -123,6 +152,11 @@
     </style>
 </head>
 <body>
+
+<jsp:include page="common/header.jsp">
+    <jsp:param name="activePage" value="predict"/>
+</jsp:include>
+
 <div class="container">
     <h1>⚾ 오늘의 승부 예측</h1>
     
@@ -161,37 +195,74 @@
             return;
         }
 
+        // 디버깅을 위한 로그
+        console.log('Received games data:', games);
+
         container.innerHTML = games.map(game => {
             const homeTeam = game.homeTeam;
             const awayTeam = game.awayTeam;
             const winnerId = game.predictedWinnerId;
             
-            const homeWinner = winnerId && winnerId === homeTeam.id;
-            const awayWinner = winnerId && winnerId === awayTeam.id;
+            // 디버깅: 로고 정보 확인
+            console.log('Home team:', homeTeam.name, 'Logo:', homeTeam.logo);
+            console.log('Away team:', awayTeam.name, 'Logo:', awayTeam.logo);
+            
+            // 숫자 변환 및 null 체크 헬퍼 함수
+            const formatNumber = (value, decimals) => {
+                if (value === null || value === undefined || value === '') {
+                    return 'N/A';
+                }
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num)) {
+                    return 'N/A';
+                }
+                return num.toFixed(decimals);
+            };
+            
+            const homeWinner = winnerId !== null && winnerId !== undefined && winnerId === homeTeam.id;
+            const awayWinner = winnerId !== null && winnerId !== undefined && winnerId === awayTeam.id;
 
-            return `
-                <div class="game-container">
-                    <div class="matchup">
-                        <div class="team-box ${awayWinner ? 'winner' : ''}">
-                            <div class="team-name">${awayTeam.name}</div>
-                            <div class="team-stats">
-                                <div>OPS: ${awayTeam.ops ? awayTeam.ops.toFixed(3) : 'N/A'}</div>
-                                <div>ERA: ${awayTeam.era ? awayTeam.era.toFixed(2) : 'N/A'}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="vs-divider">VS</div>
-                        
-                        <div class="team-box ${homeWinner ? 'winner' : ''}">
-                            <div class="team-name">${homeTeam.name}</div>
-                            <div class="team-stats">
-                                <div>OPS: ${homeTeam.ops ? homeTeam.ops.toFixed(3) : 'N/A'}</div>
-                                <div>ERA: ${homeTeam.era ? homeTeam.era.toFixed(2) : 'N/A'}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+            const awayOps = formatNumber(awayTeam.ops, 3);
+            const awayEra = formatNumber(awayTeam.era, 2);
+            const homeOps = formatNumber(homeTeam.ops, 3);
+            const homeEra = formatNumber(homeTeam.era, 2);
+            const awayName = awayTeam.name || 'N/A';
+            const homeName = homeTeam.name || 'N/A';
+            const awayClass = awayWinner ? 'winner' : '';
+            const homeClass = homeWinner ? 'winner' : '';
+            
+            // 로고 이미지 HTML 생성 (로고가 있으면 표시, 없으면 플레이스홀더)
+            const awayLogoPath = awayTeam.logo && awayTeam.logo.trim() !== '' ? awayTeam.logo : null;
+            const homeLogoPath = homeTeam.logo && homeTeam.logo.trim() !== '' ? homeTeam.logo : null;
+            
+            const awayLogo = awayLogoPath ? 
+                '<div class="team-logo"><img src="' + awayLogoPath + '" alt="' + awayName + ' 로고" onload="console.log(\'Logo loaded:\', this.src)" onerror="console.error(\'Failed to load logo:\', this.src); this.parentElement.innerHTML=\'<div class=\\\'team-logo-placeholder\\\'>로고<br>없음</div>\';"></div>' : 
+                '<div class="team-logo-placeholder">로고<br>없음</div>';
+            const homeLogo = homeLogoPath ? 
+                '<div class="team-logo"><img src="' + homeLogoPath + '" alt="' + homeName + ' 로고" onload="console.log(\'Logo loaded:\', this.src)" onerror="console.error(\'Failed to load logo:\', this.src); this.parentElement.innerHTML=\'<div class=\\\'team-logo-placeholder\\\'>로고<br>없음</div>\';"></div>' : 
+                '<div class="team-logo-placeholder">로고<br>없음</div>';
+            
+            return '<div class="game-container">' +
+                '<div class="matchup">' +
+                '<div class="team-box ' + awayClass + '">' +
+                awayLogo +
+                '<div class="team-name">' + awayName + '</div>' +
+                '<div class="team-stats">' +
+                '<div>OPS: ' + awayOps + '</div>' +
+                '<div>ERA: ' + awayEra + '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="vs-divider">VS</div>' +
+                '<div class="team-box ' + homeClass + '">' +
+                homeLogo +
+                '<div class="team-name">' + homeName + '</div>' +
+                '<div class="team-stats">' +
+                '<div>OPS: ' + homeOps + '</div>' +
+                '<div>ERA: ' + homeEra + '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
         }).join('');
     }
 
